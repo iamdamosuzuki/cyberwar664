@@ -26,8 +26,8 @@ if (isset($_POST['first']) && isset($_POST['last'])){
         $first = mysql_real_escape_string($_POST['first']);
         $last = mysql_real_escape_string($_POST['last']);
         
-        $query = "INSERT INTO cybertest(firstName,lastName) VALUES
-            ('$first','$last')";
+        $query = "INSERT INTO author_list(name) VALUES
+            ('$name')";
         
         mysql_query($query)
             or die("insert failed " . mysql_error());
@@ -56,16 +56,16 @@ case 7: echo "<h2 style = 'color:red'>latitude & longitude must be numeric</h2>"
 }
 
 // builds the table based on the database data
-echo "<table><tr><th>First</th><th>Last</th><th>ID</th></tr>";
+echo "<table><tr><th>id</th><th>name</th></tr>";
 
-$query = "SELECT * FROM cybertest";
+$query = "SELECT * FROM author_list";
 $result = mysql_query($query);
 $rows = mysql_num_rows($result);
 
 for ($i = 0; $i < $rows ; ++$i){
     $row = mysql_fetch_row($result);
     echo "<tr>";
-    for ($j = 0; $j < count($row); ++$j) echo "<td>$row[$j]</td>";
+    for ($j = 0; $j < count($row)-1; ++$j) echo "<td>$row[$j]</td>";
     echo '<td><a href="edit.php?id=' . htmlentities($row[2]) .'">edit</a> /';
     echo ' <a href="delete.php?id=' . htmlentities($row[2]) . '">delete</a></td>';
 }
