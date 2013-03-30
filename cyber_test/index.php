@@ -65,9 +65,10 @@ for ($i = 0; $i < $rows ; ++$i){
     $row = mysql_fetch_row($result);
     echo "<tr>";
     for ($j = 0; $j < count($row)-1; ++$j) echo "<td>$row[$j]</td>";
-    echo '<td><a href="edit.php?id=' . htmlentities($row[2]) .'">edit</a> /';
-    echo ' <a href="delete.php?id=' . htmlentities($row[2]) . '">delete</a></td>';
+    echo '<td><a href="edit.php?id=' . htmlentities($row[0]) .'">edit</a> /';
+    echo ' <a href="delete.php?id=' . htmlentities($row[0]) . '">delete</a></td>';
 }
+
 
 echo "</table>";
 echo "<a href='add.php'>add new</a>";
@@ -76,11 +77,21 @@ echo "<a href='add.php'>add new</a>";
 echo <<<_OUT
 <h2>add a new name</h2>
 <form method='post'>
-name : <input  type='text' name='name'><br /><br /> 
-name : <input id='names' type='text' name='name'><br /><br />
-<input id='button' type='submit' value='add'><a href='index.php'>cancel</a>
-</form>
+name : <input id='names' type='text' name='name'><br /><br /> 
+    <select size=10 name='name'>
 _OUT;
- 
+
+
+
+for ($j = 0; $j < $rows ; ++$j){
+    $wor = mysql_fetch_row($result);
+    echo "<option value='". $wor[1] . "'>" . $wor[1] . "</option>";
+}
+
+echo  "</select>
+<input id='button' type='submit' value='add'><a href='index.php'>cancel</a>
+</form>";
+
+echo $results[1,0];
 
 ?>
