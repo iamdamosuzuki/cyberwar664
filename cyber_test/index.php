@@ -6,16 +6,16 @@ $_SESSION['status'] = (isset($_SESSION['status'])) ? $_SESSION['status'] : '';
 
 session_destroy(); 
 
-if (isset($_POST['first']) && isset($_POST['last'])){
+if (isset($_POST['name'])){
     
     
-    if((!$_POST['first']) || (!$_POST['last'])){
+    if((!$_POST['name'])){
     
         $_SESSION['status'] = 4;
         header('Location: index.php');
         return;
         
-    }else if(is_numeric($_POST['first']) || is_numeric($_POST['last'])){
+    }else if(is_numeric($_POST['name'])){
     
         $_SESSION['status'] = 7;
         header('Location: index.php');
@@ -23,8 +23,7 @@ if (isset($_POST['first']) && isset($_POST['last'])){
         
     }else{
 
-        $first = mysql_real_escape_string($_POST['first']);
-        $last = mysql_real_escape_string($_POST['last']);
+        $name = mysql_real_escape_string($_POST['name']);
         
         $query = "INSERT INTO author_list(name) VALUES
             ('$name')";
@@ -77,9 +76,11 @@ echo "<a href='add.php'>add new</a>";
 echo <<<_OUT
 <h2>add a new name</h2>
 <form method='post'>
-first : <input type='text' name='first'><br /><br /> 
-last : <input type='text' name='last'><br /><br />
+name : <input  type='text' name='name'><br /><br /> 
+name : <input id='names' type='text' name='name'><br /><br />
 <input id='button' type='submit' value='add'><a href='index.php'>cancel</a>
 </form>
 _OUT;
+ 
+
 ?>
