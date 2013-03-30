@@ -1,16 +1,19 @@
 {
     "nodes":
         [
-            {"name":"Client 1",       "group":0},
-            {"name":"Loadbalancer 1", "group":0},
-            {"name":"Webserver 1",    "group":1},
-            {"name":"Webserver 2",    "group":1}
+            {"name":"Client 1",       "group":0,    "id": 33},
+            {"name":"Loadbalancer 1", "group":50,    "id": 34},
+            {"name":"Webserver 1",    "group":1,     "id": 31,  "crabs": 33},
+            {"name":"Webserver 2",    "group":1,     "id": 32}
         ],
     "links":
         [
             {"source":0, "target":1, "value":1},
-            {"source":1, "target":2, "value":10},
-            {"source":0, "target":3, "value":100},
-            {"source":0, "target":2, "value":50}
+            {"source":0, "target":2, "value":10},
+            {"source":0, "target":3, "value":1},
+            {"source":1, "target":2, "value":50}
         ]
 }
+
+
+
