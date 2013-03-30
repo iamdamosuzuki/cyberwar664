@@ -77,21 +77,20 @@ echo "<a href='add.php'>add new</a>";
 echo <<<_OUT
 <h2>add a new name</h2>
 <form method='post'>
-name : <input id='names' type='text' name='name'><br /><br /> 
-    <select size=10 name='name'>
+name : <input id='textbox' type='text' name='name'><br /><br /> 
+    <select id="select" size=10 name='name'>
 _OUT;
 
-
-
+$q = "SELECT name FROM author_list";
+$rs = mysql_query($q);
 for ($j = 0; $j < $rows ; ++$j){
-    $wor = mysql_fetch_row($result);
-    echo "<option value='". $wor[1] . "'>" . $wor[1] . "</option>";
+    $wor = mysql_fetch_row($rs);
+    echo "<option value='". $wor[0] . "'>" . $wor[0] . "</option>";
 }
 
 echo  "</select>
 <input id='button' type='submit' value='add'><a href='index.php'>cancel</a>
 </form>";
 
-echo $results[1,0];
 
 ?>
