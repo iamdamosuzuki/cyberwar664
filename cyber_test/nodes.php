@@ -5,16 +5,29 @@ require_once 'login.php';
 $like = $_GET['term'];
 
 
-$query = "SELECT name,id FROM author_list WHERE name LIKE '%$like%'";
-$result = mysql_query($query);
+$queryAuthor = "SELECT name,id FROM author_list";
+$resultAuthor = mysql_query($queryAuthor);
 
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-	$row['value'] = htmlentities($row['name']);
+while ($row = mysql_fetch_array($resultAuthor, MYSQL_ASSOC)){
 	$row['id'] = (int)$row['id'];
-	$row_set[]= $row;
+	$row['group'] = '0';
+	$nodes[]= $row;
 
 }
 
-echo json_encode($row_set);
+
+$queryExpert = "SELECT name,id FROM expert_list";
+$resultExpert = mysql_query($queryExpert);
+
+while ($row = mysql_fetch_array($resultExpert, MYSQL_ASSOC)){
+	$row['id'] = (int)$row['id'];
+	$row['group'] = '3';
+	$nodes[]= $row;
+
+}
+
+echo "{    \"nodes\": ";
+echo json_encode($nodes);
+echo ",    \"links\":        [        ]}";
 
 ?>
