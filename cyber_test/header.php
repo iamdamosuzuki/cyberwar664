@@ -1,7 +1,7 @@
 <?php // SI 664 Nabil Kashyap midterm 2.25.13
 echo <<<_OUT
 <head>
-<title>Nabils SI664: A4 Track Listing Database Thing</title>
+<title>SI664 Cyberwarfare Database</title>
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
