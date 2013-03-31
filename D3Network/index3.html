@@ -39,7 +39,7 @@ d3.json("../cyber_test/nodes.php", function(error, graph) {
       
 //d3.csv("auth_exp.csv", function(d) {
 //  return {
-//    article: d.article, 
+//    article: d.article,
 //    expert: d.expert,
 //  };
 
@@ -58,7 +58,7 @@ d3.json("../cyber_test/nodes.php", function(error, graph) {
       .call(force.drag);
 
    
- 
+ $nodes = 'nodes' . $nodes .
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
