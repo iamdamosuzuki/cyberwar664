@@ -31,7 +31,7 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-d3.json("../cyber_test/nodes.php", function(error, graph) {
+d3.json("../cyber_test/links.php", function(error, graph) {
   force
       .nodes(graph.nodes)
       .links(graph.links)
@@ -57,8 +57,6 @@ d3.json("../cyber_test/nodes.php", function(error, graph) {
       .style("fill", function(d) { return color(d.group); })
       .call(force.drag);
 
-   
- $nodes = 'nodes' . $nodes .
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
