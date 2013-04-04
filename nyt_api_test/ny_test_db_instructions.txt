@@ -1,0 +1,14 @@
+CREATE DATABASE nyt_test DEFAULT CHARACTER SET utf8;
+GRANT ALL ON nyt_test.* TO 'nyt'@'localhost' IDENTIFIED BY 'nyt';
+USE nyt_test;
+CREATE TABLE Users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY, 
+  date VARCHAR(1024) NOT NULL,
+  byline VARCHAR(1024) NOT NULL,
+  nytd_byline VARCHAR(1024) NOT NULL,
+  title VARCHAR(1024) NOT NULL,
+  nytd_title VARCHAR(1024) NOT NULL,
+  des_facet VARCHAR(1024) NOT NULL,
+  nytd_des_facet VARCHAR(1024) NOT NULL,
+  url VARCHAR(1024) NOT NULL,
+);
