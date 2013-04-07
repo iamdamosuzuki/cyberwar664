@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script type="text/javascript" src="d3/d3.js"></script>
+		<style type="text/css">
+		
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: teal;
+				margin-right: 2px;
+			}
+			
+			#button {
+                position: absolute;
+                top: 10px;
+                left: 400px;
+            }
+            
+            .btn-mini {
+                padding: 2px 6px;
+                font-size: 11px;
+                line-height: 14px;
+            }
+
+
+
+		</style>        
+    </head>
+    <body>
+      
+    
+        <script type="text/javascript">
+            
+			//Width and height
+			var w = 20000;
+			var h = 200;
+			var dataset = [1,2,3];
+			var jsondata;
+            
+            var jsondata = d3.json("../cyber_test/bars.php", function(json) {
+              jsondata = json;
+              generateVis();
+            });
+            
+            function generateVis(){
+            
+                console.log(jsondata);
+                
+                d3.select("body").selectAll("div")
+                    .data(jsondata)
+                    .enter()
+                    .append("div")
+                    .attr("class", "bar")
+                    .style("height", function(d) {
+                        var barHeight = d * 5;
+                        return barHeight + "px";
+                    });
+            }  
+                
+                
+            
+            
+        </script>
+        
+
+    </body>
+</html>
