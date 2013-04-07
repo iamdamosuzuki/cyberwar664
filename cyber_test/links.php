@@ -89,18 +89,6 @@ $jsonobj = json_decode($dataJSON, TRUE);
 echo $dataJSON;
 
 //print_r($jsonobj['nodes'][2]['id']);
-=======
->>>>>>> Stashed changes
-
-for($i = 0; $i < count($jsonobj['nodes']); $i++){
-
-	$links['source'] = 0;
-}
-
-print_r($links);
-
-$nodesJSON = json_encode($node);
-$jsonobj = json_decode($nodesJSON, TRUE);
 
 
 ?>
