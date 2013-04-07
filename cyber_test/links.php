@@ -27,7 +27,6 @@ while ($row = mysql_fetch_array($resultExpert, MYSQL_ASSOC)){
 // $nodes = "{    \nodes\: " . $nodes .",    \links\:        [        ]}";
 $data["nodes"] = $nodes;
 $data["links"] = array();
-<<<<<<< Updated upstream
 
 $linksCounter = 0;
 for($i = 0; $i < count($data['nodes']); $i++){
@@ -89,6 +88,10 @@ $jsonobj = json_decode($dataJSON, TRUE);
 echo $dataJSON;
 
 //print_r($jsonobj['nodes'][2]['id']);
+
+
+
+
 
 
 ?>
