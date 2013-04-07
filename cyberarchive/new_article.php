@@ -1,5 +1,5 @@
-<?PHP
-<<<<<<< HEAD
+ƒ<?PHP
+
 	include'config.php';
 
 	
@@ -77,7 +77,7 @@
 		 <form action='submit_article.php"; 
 
 //Provides options for creation of new aritcle. 	
-=======
+
 
 	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
 	if (!$con)
@@ -147,14 +147,14 @@
 	echo "<a href='index.php'>Return to main page</a>
 		 <form action='submit_article.php"; 
 	
->>>>>>> added all the files
+
 	if(isset($_GET['id'])){
 		echo "?id=" . $_GET['id'];
 	}
 	
 	echo "' method='post'>Author: <select name='author[]' size='10' multiple='multiple'>";
 
-<<<<<<< HEAD
+
 	try{
 		$sql = "SELECT * FROM `author_list` ORDER BY `name`";
 		foreach ($db->query($sql) as $row) {
@@ -231,7 +231,7 @@
 
 	//Note that ote New york times is the only current option for source
 	//Provides option for article source, title, url, data, and "about"; submits form. 
-=======
+
 	$query = "SELECT * FROM `author_list` ORDER BY `name`";
 	$result = mysql_query($query);
 	if (!$result){
@@ -313,7 +313,7 @@
 	
 	#note New york times is the only current option for source
 	
->>>>>>> added all the files
+
 	echo"</select><br/>Source: <select name='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' name='title' 
 	value='" . $curart['title'] . "'/>
 	<br/>Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/>
@@ -321,14 +321,14 @@
 	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . 
 	"</textarea><br/><input type='submit' value='Submit'>
 	</form>";
-<<<<<<< HEAD
+
 	
 	$db = null;
-=======
+
 
 
 	
 	
 	mysql_close($con);
->>>>>>> added all the files
+
 ?>

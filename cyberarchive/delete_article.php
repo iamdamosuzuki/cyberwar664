@@ -1,6 +1,6 @@
 <?PHP
 
-<<<<<<< HEAD
+
 include 'config.php';
 
 //sets up database connection
@@ -23,7 +23,7 @@ include 'config.php';
 
 ?>
 
-=======
+
 	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
 	if (!$con)
 	{

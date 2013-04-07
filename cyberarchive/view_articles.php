@@ -1,5 +1,5 @@
 <?PHP
-<<<<<<< HEAD
+
 	include 'config.php';
 //sets up database connection 	
 	try{
@@ -23,7 +23,7 @@
 		}
 	} catch(PDOException $ex) {
 		echo 'Connection failed: ' . $ex->getMessage();
-=======
+
 
 	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
 	if (!$con)
@@ -44,7 +44,7 @@
 	echo "<a href='index.php'>Return to main page</a><br/><br/><table border=1>";
 	while($row = mysql_fetch_array($result)){
 		echo "<tr><td><a href='new_article.php?id=" . $row['id'] . "'>" . $row['title'] . "</a></td><td>" . $row['source'] . "</td><td>" . $row['date'] . "</td><td>" . $row['url'] . "</td></tr>";
->>>>>>> added all the files
+
 	}
 	echo "</table>";
 ?>

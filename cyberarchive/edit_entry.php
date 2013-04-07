@@ -1,13 +1,13 @@
 <?PHP
-<<<<<<< HEAD
+
 	include 'config.php';
-=======
->>>>>>> added all the files
+
+
 	$table = $_GET['table'];
 	$id = $_GET['entryid'];
 
 
-<<<<<<< HEAD
+
 //sets up database connection
 
 	try{
@@ -49,7 +49,7 @@
 	<form action='delete.php?table=$table&id=$id' method='post'><input type='submit' value='Delete'/></form>";
 	
 	$db = null;
-=======
+
 	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
 	if (!$con)
 	{
@@ -77,5 +77,5 @@
 		 </form><form action='delete.php?table=$table&id=$id' method='post'><input type='submit' value='Delete'/></form>";
 	
 	mysql_close($con);
->>>>>>> added all the files
+
 ?>

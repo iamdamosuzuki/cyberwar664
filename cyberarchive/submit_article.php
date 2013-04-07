@@ -1,6 +1,6 @@
 <?PHP
 
-<<<<<<< HEAD
+
 	include 'config.php';
 //sets up database connection
 	try{
@@ -70,7 +70,7 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 		$id = $db->lastInsertId();	
-=======
+
 	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
 	if (!$con)
 	{
@@ -130,52 +130,52 @@
 		
 		$id = mysql_insert_id();
 	
->>>>>>> added all the files
+
 	}
 
 	
 	#author
 	foreach ($_POST['author'] as $eachauth){
-<<<<<<< HEAD
+
 		try{
 			$sql = "INSERT INTO `authors` (`article`,`author`) VALUES ('" . $id . "','" . $eachauth . "')";
 			$result = $db->query($sql);
 			echo $sql . "<br/>";
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
-=======
+
 		$query = "INSERT INTO `authors` (`article`,`author`) VALUES ('" . $id . "','" . $eachauth . "')";
 		$result = mysql_query($query);
 		echo $query . "<br/>";
 		if (!$result){
 			die('Error: ' . mysql_error());			
->>>>>>> added all the files
+
 		}
 	}
 	
 	
 	#attack
 	foreach ($_POST['attack'] as $eachatt){
-<<<<<<< HEAD
+
 		try{
 			$sql = "INSERT INTO `attacks` (`article`,`attack`) VALUES ('" . $id . "','" . $eachatt . "')";
 			$result = $db->query($sql);
 			echo $sql . "<br/>";
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
-=======
+
 		$query = "INSERT INTO `attacks` (`article`,`attack`) VALUES ('" . $id . "','" . $eachatt . "')";
 		$result = mysql_query($query);
 		echo $query . "<br/>";
 		if (!$result){
 			die('Error: ' . mysql_error());			
->>>>>>> added all the files
+
 		}
 	}
 	
 	#actor
 	foreach ($_POST['actor'] as $eachact){
-<<<<<<< HEAD
+
 		try{
 			$sql = "INSERT INTO `actors` (`article`,`actor`) VALUES ('" . $id . "','" . $eachact . "')";
 			$result = $db->query($sql);
@@ -194,7 +194,7 @@
 			echo $sql . "<br/>";
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
-=======
+
 		$query = "INSERT INTO `actors` (`article`,`actor`) VALUES ('" . $id . "','" . $eachact . "')";
 		$result = mysql_query($query);
 		echo $query . "<br/>";
@@ -210,14 +210,14 @@
 		echo $query . "<br/>";
 		if (!$result){
 			die('Error: ' . mysql_error());			
->>>>>>> added all the files
+
 		}
 	}
 	
 	
 	#tech
 	foreach ($_POST['tech'] as $eachtech){
-<<<<<<< HEAD
+
 		try{
 			$sql = "INSERT INTO `tech` (`article`,`tech`) VALUES ('" . $id . "','" . $eachtech . "')";
 			$result = $db->query($sql);
@@ -228,7 +228,7 @@
 	}
 	
 //prints new article or view article links
-=======
+
 		$query = "INSERT INTO `tech` (`article`,`tech`) VALUES ('" . $id . "','" . $eachtech . "')";
 		$result = mysql_query($query);
 		echo $query . "<br/>";
@@ -237,7 +237,7 @@
 		}
 	}
 
->>>>>>> added all the files
+
 	echo "<a href='new_article.php'>New Article</a><br/>
 	<a href='view_articles.php'>View Articles</a><br/>";
 	

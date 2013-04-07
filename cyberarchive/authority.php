@@ -1,12 +1,12 @@
 <?PHP
-<<<<<<< HEAD
+
 	include'config.php';
 	$table = $_GET['table'];	
 	$id = $_GET['id'];	
 	$name = $_POST['name'];
 	$about = $_POST['about'];
 	
-=======
+
 	//include(config.php);
 	$table = $_GET['table'];
 	$id= $_GET['id'];
@@ -14,7 +14,7 @@
 	
 
 
->>>>>>> added all the files
+
 	echo "<a href='index.php'>Return to main page</a>
 		 <form action='authority.php?table=$table&update=f' method='post'>
 		 Input entry for table: $table <br/>
@@ -24,11 +24,11 @@
 		 <input type='submit' value='Submit'>
 		 </form>";
 
-<<<<<<< HEAD
+
 
 
 //setup the database connection
-=======
+
 //Below listed variable should not be necessary due to inclusion of config.php; whole process needs to be debugged. 
 $dsn = 'mysql:dbnam=cyberarchivedev;host=50.63.105.14';
 $user = 'cyberarchivedev';
@@ -37,13 +37,13 @@ $password = 'Archive@ccess5';
 //setup the database connection
 // Opens database and queries it to set attributes. If database does not respond (equiv of if !=$db), then throws connection failed message and reason for failure (as per PDOEXCEPTION)
 
->>>>>>> added all the files
+
 	try{
 		$db = new PDO($dsn, $user, $password);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}	catch(PDOException $ex) {
 		echo 'Connection failed: ' . $ex->getMessage();
-<<<<<<< HEAD
+
 	}
 
 //creates new entry for entered data or updates entered data
@@ -60,7 +60,7 @@ $password = 'Archive@ccess5';
 			try{$query = "UPDATE `$table` SET `name`='" . $_POST['name'] . "', `about`='" . $_POST['about'] . "'WHERE `id`='$id'";
 			echo $query . "</br>";
 			$result = $db->query($query);
-=======
+
 		exit;
 	}
 
@@ -85,12 +85,12 @@ $password = 'Archive@ccess5';
 			echo $query . "</br>";
 			try{
 				$result = $db->query($query);
->>>>>>> added all the files
+
 			} catch(PDOException $ex) {
 				echo 'Connection failed: ' . $ex->getMessage();
 			}
 			echo "submitted<br/>";
-<<<<<<< HEAD
+
 		}
 	}
 
@@ -107,7 +107,7 @@ $password = 'Archive@ccess5';
 	}
 	
 	echo "</table>";
-=======
+
 	}
 
 
@@ -127,7 +127,7 @@ $password = 'Archive@ccess5';
 		return $result_show;}
 	
         echo "</table>";
->>>>>>> added all the files
+
 	
 	$db = null;
 ?>

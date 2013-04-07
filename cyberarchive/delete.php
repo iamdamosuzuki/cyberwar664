@@ -1,5 +1,5 @@
 <?PHP
-<<<<<<< HEAD
+
 	include'config.php';
 	$table = $_GET['table'];
 	$id = $_GET['id'];
@@ -23,7 +23,7 @@
 	echo "Entry deleted. Return to <a href='authority.php?table=$table'>edit $table</a>";
 	
 	$db = null;
-=======
+
 	$table = $_GET['table'];
 	$id = $_GET['id'];
 
