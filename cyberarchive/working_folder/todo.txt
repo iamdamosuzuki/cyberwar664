@@ -1,0 +1,9 @@
+- mysqli
+- move password out
+- add list of included articles for each authority edit page
+- delete from linked table when someone deletes an authority (rename delete.php to delete_authority.php)
+- delete article function
+- merge authority titles
+- additional info in the article list (make sortable?)
+- search function
+- clean up the data entry
