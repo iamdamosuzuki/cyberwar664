@@ -1,0 +1,63 @@
+/*css document for backend of cyberarchive. */
+
+
+/* below are general settings for entire backend*/
+body{
+    font-family: helvetica, arial, sans-serif;
+    color: #29293D;
+    font-weight: lighter;
+    letter-spacing: .08em;
+}
+
+a{
+    font-family: helvetica, arial, sans-serif;
+    color: #33AD33;
+}
+
+a:visited{
+    color: #009300;
+}
+
+a:hover{
+    color: #00FF00;
+}
+
+h1{
+    color: #009300;
+    font-weight: bolder;
+    font-family: helvetica, arial, sans-serif;
+    size: 20px;
+    letter-spacing: .1em; 
+    
+}
+
+/* these settings are used in new_article.php on the selection boxes*/
+
+.formfield {
+    vertical-align: top;
+    font-family: helvetica; 
+}
+
+#moveFunction {
+    text-decoration:none;
+    font-family: helvetica;
+}
+
+
+/* these setings are used in view_articles.php for the sorting function*/
+
+th{
+    font-weight: bold;
+    color: #505050;
+    letter-spacing: .15em;
+    height: 20px; 
+}
+
+th.headerSortUp { 
+    background-color: #00FF00; 
+} 
+
+th.headerSortDown { 
+    background-color:  #00FF00; 
+}
+
