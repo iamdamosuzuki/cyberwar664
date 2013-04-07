@@ -38,27 +38,27 @@
 			//Width and height
 			var w = 20000;
 			var h = 200;
-			var dataset = [1,2,3];
-			var jsondata;
+			var dataset;
             
-            var jsondata = d3.json("../cyber_test/bars.php", function(json) {
-              jsondata = json;
+            var dataset = d3.json("../cyber_test/bars.php", function(json) {
+              dataset = json;
               generateVis();
             });
             
             function generateVis(){
             
-                console.log(jsondata);
+                console.log(dataset);
                 
                 d3.select("body").selectAll("div")
-                    .data(jsondata)
+                    .data(dataset)
                     .enter()
                     .append("div")
                     .attr("class", "bar")
                     .style("height", function(d) {
-                        var barHeight = d * 5;
+                        var barHeight = d;
                         return barHeight + "px";
                     });
+                                       
             }  
                 
                 
