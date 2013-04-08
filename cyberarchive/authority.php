@@ -32,9 +32,9 @@
 //setup the database connection
 
 //Below listed variable should not be necessary due to inclusion of config.php; whole process needs to be debugged. 
-$dsn = 'mysql:dbnam=cyberwar_test;host=localhost';
-$user = 'cyberwar';
-$password = 'cyberwar';
+// $dsn = 'mysql:dbnam=cyberwar_test;host=localhost';
+// $user = 'cyberwar';
+// $password = 'cyberwar';
 
 //setup the database connection
 // Opens database and queries it to set attributes. If database does not respond (equiv of if !=$db), then throws connection failed message and reason for failure (as per PDOEXCEPTION)
@@ -98,48 +98,48 @@ $password = 'cyberwar';
 
 //prints table of corresponding authority values
 
-echo "<table><tr><th>id</th><th>name</th></tr>";
+// echo "<table><tr><th>id</th><th>name</th></tr>";
 
-$query = "SELECT * FROM `$table`";
-$result = mysql_query($query);
-$rows = mysql_num_rows($result);
+// $query = "SELECT * FROM `$table`";
+// $result = mysql_query($query);
+// $rows = mysql_num_rows($result);
 
-for ($i = 0; $i < count($rows) ; ++$i){
-	$row = mysql_fetch_row($result);
-	echo "<tr>";
-	for ($j = 0; $j < count($row)-1; ++$j) echo "<td>$row[$j]</td>";
-}
-echo '</table>';
+// for ($i = 0; $i < count($rows) ; ++$i){
+// 	$row = mysql_fetch_row($result);
+// 	echo "<tr>";
+// 	for ($j = 0; $j < count($row)-1; ++$j) echo "<td>$row[$j]</td>";
+// }
+// echo '</table>';
 
 // echo "</table>";
-// 	echo "<table border=1><col width='200'>";
+	echo "<table border=1><col width='200'>";
 	
-// 	try{
-// 	$sql = "SELECT * FROM `$table` ORDER BY `name`";
-// 	foreach ($db->query($sql) as $row){
-// 		echo "<tr><td><a href='edit_entry.php?table=$table&entryid=" . $row['id'] . "'>" . $row['name'] . "</a></td><td>" . $row['about'] . "</td></tr>";
-// 	}
-// 	} catch(PDOException $ex){
-// 		echo 'Connection failed: ' . $ex->getMessage();
-// 	}
+	try{
+	$sql = "SELECT * FROM `$table` ORDER BY `name`";
+	foreach ($db->query($sql) as $row){
+		echo "<tr><td><a href='edit_entry.php?table=$table&entryid=" . $row['id'] . "'>" . $row['name'] . "</a></td><td>" . $row['about'] . "</td></tr>";
+	}
+	} catch(PDOException $ex){
+		echo 'Connection failed: ' . $ex->getMessage();
+	}
 	
-	// echo "</table>";
+	echo "</table>";
 
-	// $query = "SELECT * FROM `$table` ORDER BY `name`" . $db->quote($zip);
-	// try{
-	// $result = $db->query($query);
-	// } catch(PDOException $ex) {
-	// 	echo 'Connection failed: ' . $ex->getMessage();			
-	// }
+	$query = "SELECT * FROM `$table` ORDER BY `name`" . $db->quote($zip);
+	try{
+	$result = $db->query($query);
+	} catch(PDOException $ex) {
+		echo 'Connection failed: ' . $ex->getMessage();			
+	}
  
- //        echo "<table border=1><col width='200'>";
+        echo "<table border=1><col width='200'>";
 
-	// while($row = $result->fetch(PDO::FETCH_ASSOC)){
-	// 	$result_show . "<tr><td><a href='edit_entry.php?table=$table&entryid=" . $row['id'] . "'>" 
-	// 	. $row['name'] . "</a></td><td>" . $row['about'] . "</td></tr>";
-	// }
-	// return $result_show;
+	while($row = $result->fetch(PDO::FETCH_ASSOC)){
+		$result_show . "<tr><td><a href='edit_entry.php?table=$table&entryid=" . $row['id'] . "'>" 
+		. $row['name'] . "</a></td><td>" . $row['about'] . "</td></tr>";
+	}
+	return $result_show;
 	
- //    echo "</table>";
-	// $db = null;
+    echo "</table>";
+	$db = null;
 ?>

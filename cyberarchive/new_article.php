@@ -79,14 +79,13 @@
 //Provides options for creation of new aritcle. 	
 
 
-	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
+	$con = mysql_connect("localhost","cyberwar","cyberwar");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());
 	}
 	
-	mysql_select_db("cyberarchivedev");
-	
+	mysql_select_db("cyberwar_test");
 	
 	#if there is a previous post for editing pull the data
 	if(isset($_GET['id'])){
@@ -143,17 +142,17 @@
 		}
 	}
 	
-	
-	echo "<a href='index.php'>Return to main page</a>
-		 <form action='submit_article.php"; 
+	// echo "<a href='index.php'>Return to main page</a>
+echo		 "<form action='submit_article.php"; 
 	
 
 	if(isset($_GET['id'])){
 		echo "?id=" . $_GET['id'];
 	}
 	
-	echo "' method='post'>Author: <select name='author[]' size='10' multiple='multiple'>";
-
+	echo "' method='post'>Author: 
+	<input id='authorBox' type='text' name='author'><br /><br />  
+	<select name='author[]' id='authorSelect' size='10' multiple='multiple'>";
 
 	try{
 		$sql = "SELECT * FROM `author_list` ORDER BY `name`";
@@ -168,7 +167,9 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 	
-	echo "</select><br/>Attack: <select name='attack[]' size='10' multiple='multiple'>";
+	echo "</select><br/>Attack:
+	<input id='attackBox' type='text' name='attack'><br /><br />  
+	<select name='attack[]' id='attackSelect' size='10' multiple='multiple'>";
 
 	try{
 		$sql = "SELECT * FROM `attack_list` ORDER BY `name`";
@@ -183,8 +184,9 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 	
-
-	echo "</select><br/>Actor: <select name='actor[]' size='10' multiple='multiple'>";
+	echo "</select><br/>Actor: 
+	<input id='actorBox' type='text' name='actor'><br /><br />  
+	<select name='actor[]' id='actorSelect' size='10' multiple='multiple'>";
 
 	try{
 		$sql = "SELECT * FROM `actor_list` ORDER BY `name`";
@@ -199,7 +201,9 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 		
-	echo "</select><br/>Expert: <select name='expert[]' size='10' multiple='multiple'>";
+	echo "</select><br/>Expert: 
+	<input id='expertBox' type='text' name='expert'><br /><br />  
+	<select name='expert[]' id='expertSelect' size='10' multiple='multiple'>";
 
 	try{
 		$sql = "SELECT * FROM `expert_list` ORDER BY `name`";
@@ -214,7 +218,9 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 		
-	echo "</select><br/>Tech: <select name='tech[]' size='10' multiple='multiple'>";
+	echo "</select><br/>Tech:
+	<input id='techBox' type='text' name='tech'><br /><br />  
+	<select name='tech[]' id='techSelect' size='10' multiple='multiple'>";
 
 	try{
 		$sql = "SELECT * FROM `tech_list` ORDER BY `name`";
@@ -232,83 +238,92 @@
 	//Note that ote New york times is the only current option for source
 	//Provides option for article source, title, url, data, and "about"; submits form. 
 
-	$query = "SELECT * FROM `author_list` ORDER BY `name`";
-	$result = mysql_query($query);
-	if (!$result){
-		die('Error: ' . mysql_error());			
-	}
+// $query = "SELECT * FROM `author_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
 
-	while($row = mysql_fetch_array($result)){
-		echo "<option value='". $row['id']. "'";
-		if (isset($curauths[$row['id']])){
-			echo " selected='selected'";
-		}
-		echo ">" . $row['name'] . "</option>";
-	}
-	
-	
-	echo "</select><br/>Attack: <select name='attack[]' size='10' multiple='multiple'>";
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curauths[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
 
-	$query = "SELECT * FROM `attack_list` ORDER BY `name`";
-	$result = mysql_query($query);
-	if (!$result){
-		die('Error: ' . mysql_error());			
-	}
 
-	while($row = mysql_fetch_array($result)){
-		echo "<option value='". $row['id']. "'";
-		if (isset($curattacks[$row['id']])){
-			echo " selected='selected'";
-		}
-		echo ">" . $row['name'] . "</option>";
-	}
+// echo "</select><br/>Attack:
+// <input id='textbox' type='text' name='attack'><br /><br />  
+// <select name='attack[]' id='select' size='10' multiple='multiple'>";
 
-	echo "</select><br/>Actor: <select name='actor[]' size='10' multiple='multiple'>";
+// $query = "SELECT * FROM `attack_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
 
-	$query = "SELECT * FROM `actor_list` ORDER BY `name`";
-	$result = mysql_query($query);
-	if (!$result){
-		die('Error: ' . mysql_error());			
-	}
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curattacks[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
 
-	while($row = mysql_fetch_array($result)){
-		echo "<option value='". $row['id']. "'";
-		if (isset($curacts[$row['id']])){
-			echo " selected='selected'";
-		}
-		echo ">" . $row['name'] . "</option>";
-	}
-	
-	echo "</select><br/>Expert: <select name='expert[]' size='10' multiple='multiple'>";
+// echo "</select><br/>Actor: 
+// <input id='textbox' type='text' name='actor'><br /><br />  
+// <select name='actor[]' id='select' size='10' multiple='multiple'>";
 
-	$query = "SELECT * FROM `expert_list` ORDER BY `name`";
-	$result = mysql_query($query);
-	if (!$result){
-		die('Error: ' . mysql_error());			
-	}
+// $query = "SELECT * FROM `actor_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
 
-	while($row = mysql_fetch_array($result)){
-		echo "<option value='". $row['id']. "'";
-		if (isset($curexpts[$row['id']])){
-			echo " selected='selected'";
-		}
-		echo ">" . $row['name'] . "</option>";
-	}
-	echo "</select><br/>Tech: <select name='tech[]' size='10' multiple='multiple'>";
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curacts[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
 
-	$query = "SELECT * FROM `tech_list` ORDER BY `name`";
-	$result = mysql_query($query);
-	if (!$result){
-		die('Error: ' . mysql_error());			
-	}
+// echo "</select><br/>Expert: 
+// <input id='textbox' type='text' name='expert'><br /><br />  
+// <select name='expert[]' id='select' size='10' multiple='multiple'>";
 
-	while($row = mysql_fetch_array($result)){
-		echo "<option value='". $row['id']. "'";
-		if (isset($curtech[$row['id']])){
-			echo " selected='selected'";
-		}
-		echo ">" . $row['name'] . "</option>";
-	}
+// $query = "SELECT * FROM `expert_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curexpts[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+// echo "</select><br/>Tech:
+// <input id='textbox' type='text' name='tech'><br /><br />  
+// <select name='tech[]' id='select' size='10' multiple='multiple'>";
+
+// $query = "SELECT * FROM `tech_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curtech[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
 
 	
 	#note New york times is the only current option for source

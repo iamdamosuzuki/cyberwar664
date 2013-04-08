@@ -21,16 +21,13 @@ include 'config.php';
 	//$query = "SELECT * FROM `articles` ORDER BY `source`,`date`";
 	//$result = mysql_query($query);
 
-?>
-
-
-	$con = mysql_connect("50.63.105.14","cyberarchivedev","Archive@ccess5");
+	$con = mysql_connect("localhost","cyberwar","cyberwar");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());
 	}
 	
-	mysql_select_db("cyberarchivedev");
+	mysql_select_db("cyberwar_test");
 	
 	
 	$query = "SELECT * FROM `articles` ORDER BY `source`,`date`";
@@ -40,4 +37,3 @@ include 'config.php';
 		die('Error: ' . mysql_error());			
 	}
 ?>
->>>>>>> added all the files
