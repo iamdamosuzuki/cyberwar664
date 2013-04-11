@@ -32,16 +32,18 @@ d3.json("links.php", function(error, graph) {
 
   var node = svg.selectAll(".node")
       .data(graph.nodes)
-    .enter().append("circle")
-      .attr("class", "node")
+    .enter().append("g")
+      .attr("class", "node");
+ 
+  node.append("circle")
       .attr("r", 5)
       .style("fill", function(d) { return color(d.group); })
       .call(force.drag);
       
-
   node.append("text")
       .attr("dx", 12)
       .attr("dy", ".35em")
+      .attr("fill","#000")
       .text(function(d) { return d.name });
 
   force.on("tick", function() {
