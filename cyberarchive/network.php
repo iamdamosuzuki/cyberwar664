@@ -61,7 +61,7 @@ echo <<<_END
 var width = 960,
     height = 500;
 
-var color = d3.scale.category20();
+var color = d3.scale.category10();
 
 var force = d3.layout.force()
     .charge(-120)
@@ -93,7 +93,7 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
  
   node.append('circle')
       .attr('r', 5)
-      .style('fill', function(d) { return color(d.group); })
+      .style('fill', function(d) { return color(d.group) })
       .call(force.drag);
       
   node.append('text')

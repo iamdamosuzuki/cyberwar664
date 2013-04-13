@@ -76,7 +76,7 @@ $resultSource = mysql_query($querySource);
 
 while ($row = mysql_fetch_array($resultSource, MYSQL_ASSOC)){
 	$row['id'] = (int)$row['id'];
-	$row['group'] = '0';
+	$row['group'] = 0;
 	$nodes[]= $row;
 
 }
@@ -86,7 +86,7 @@ $resultTarget = mysql_query($queryTarget);
 
 while ($row = mysql_fetch_array($resultTarget, MYSQL_ASSOC)){
 	$row['id'] = (int)$row['id'];
-	$row['group'] = '2';
+	$row['group'] = 2;
 	$nodes[]= $row;
 }
 
@@ -149,7 +149,6 @@ for($i = 0; $i < count($data['nodes']); $i++){
 //        $q1 = "SELECT authors.author, experts.expert FROM authors JOIN articles JOIN experts ON authors.article = articles.id AND experts.article = articles.id WHERE authors.author = '$sourceID'";
 //        echo "<br />" . $q1 . "<br />";
         $rs1 = mysql_query($q1);
-//        $row = mysql_fetch_array($rs1, MYSQL_ASSOC);
         while ($row = mysql_fetch_array($rs1, MYSQL_ASSOC)) {
 //            echo "Author: " . $row["author"] . " Expert: " . $row["expert"] . "<br />";
             for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes
@@ -166,47 +165,8 @@ for($i = 0; $i < count($data['nodes']); $i++){
                 }
             }
         }
- //       foreach($row as $expertID) 
- //           echo $expertID;
-            //echo $sourceRow . ': '. $sourceID . $targetRow . ': ' . $expertID . "<br /><br />";
     }
 }
-//         for($j = 0; $j < count($row); $j++){
-//             if($article){
-//                 $articleID = $article[$j];
-//                 $q2 = "SELECT expert FROM experts WHERE article = '$articleID'";
-//                 $rs2 = mysql_query($q2);
-//                 while ($row2 = mysql_fetch_array($rs2, MYSQL_ASSOC)){
-//                     $expert[] = (int)$row2['expert'];
-//                 }                  
-//                 for($k = 0; $k < count($expert); $k++){ 
-                 
-//                     for ($l = 0; $l < count($data["nodes"]); $l++){                
-                        
-//                         if ($data["nodes"][$l]["group"] == 2){
-
-//                             if ($data["nodes"][$l]["id"] == $expert[$k]){
-//                                 $data['links'][$linksCounter]['source'] = $i;
-//                                 $data['links'][$linksCounter]['target'] = $l;
-//                                 $data['links'][$linksCounter]['value'] = 1;
-//                                 $data['links'][$linksCounter]['expertID'] = $expert[$k];
-//                                 $data['links'][$linksCounter]['authorID'] = $sourceID;
-//                                 $linksCounter++;
-//                             }
-                            
-//                         }
-                        
-//                     }    
-                    
-//                 }
-                
-//             }
-         
-//          }   
-    
-//     }
-    
-// }
 
 
 $dataJSON = json_encode($data);
