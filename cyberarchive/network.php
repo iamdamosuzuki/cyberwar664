@@ -43,7 +43,6 @@ d3.json("links.php", function(error, graph) {
   node.append("text")
       .attr("dx", 12)
       .attr("dy", ".35em")
-      .attr("fill","#000")
       .text(function(d) { return d.name });
 
   force.on("tick", function() {

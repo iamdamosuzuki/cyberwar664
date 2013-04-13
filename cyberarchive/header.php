@@ -48,8 +48,10 @@ echo <<<_OUT
     .node text {
       pointer-events: none;
       font: 10px sans-serif;
-      color: #000;
+      fill: #000;
+      stroke: none;
     }
+    
 
 </style>        
 
