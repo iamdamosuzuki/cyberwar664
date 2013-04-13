@@ -10,9 +10,26 @@ $db = mysql_connect($db_hostname,$db_username, $db_password)
 
 mysql_select_db($db_database)
     or die("Here's why we can't select the database: " . mysql_error());
+    
+if ($_GET['sourceTable'] == ''){
+    $sourceTable = 'authors';
+}
+else{
+    $sourceTable = $_GET['sourceTable'] ;
+}
 
-$sourceTable = "authors";
-$targetTable = "tech";
+if ($_GET['targetTable'] == ''){
+    $targetTable = 'experts';
+}
+else{
+    $targetTable = $_GET['targetTable'] ;
+}
+
+//echo $sourceTable . "<br />";
+//echo $targetTable . "<br />";
+
+//$sourceTable = "authors";
+//$targetTable = "tech";
 
 switch($sourceTable)
 {
