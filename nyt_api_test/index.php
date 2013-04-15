@@ -14,9 +14,6 @@ define('API_URL', 'http://api.nytimes.com/svc/search/v1/article?');
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
       header('Location: index.php');
-      
-      $b = 10;
-
 
   for($i = 0; $i < 10; $i++){
         $params = array(

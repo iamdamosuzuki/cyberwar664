@@ -2,7 +2,7 @@
 
 //NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
 
-require_once 'header.php';
+include_once 'config.php';
 
 // API key from NYT dev account
 define('API_KEY', '4f7c037903eb76bfe8cf733b608c4478:11:49914020');
@@ -41,7 +41,6 @@ if (isset($_POST['search'])){
 
 if (isset($_POST['clear'])){
       mysql_query('TRUNCATE TABLE Articles');
-      $_SESSION['status'] = 2;
       header('Location: index.php');
       return;
 }
@@ -50,17 +49,6 @@ include_once 'header.php';
 
  
 echo "<h1>NYT API TEST DATABASE</h1>";
-
-// shows the right message based on the $_SESSION variable then gets rid of the variable
-switch($_SESSION['status']){
-
-case 1: echo "<h2 style = 'color:green'>name added</h2>"; break;
-case 2: echo "<h2 style = 'color:red'>table cleared</h2>"; break;
-case 3: echo "<h2 style = 'color:green'>name updated</h2>"; break;
-case 4: echo "<h2 style = 'color:red'>all values required</h2>"; break;
-
-}
-
 
 echo <<<_OUT
 <h2>search</h2>
@@ -108,7 +96,7 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 // builds the table based on the database data
 echo "<table><tr><th></th><th></th></tr>";
 
-$query = "SELECT * FROM Articles";
+$query = "SELECT * FROM Inbox";
 $result = mysql_query($query);
 if($result){ $rows = mysql_num_rows($result);
 
