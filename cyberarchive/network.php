@@ -59,7 +59,7 @@ include 'header.php';
 echo <<<_END
 <script>
 var width = 960,
-    height = 500;
+    height = 800;
 
 var color = d3.scale.category10();
 
