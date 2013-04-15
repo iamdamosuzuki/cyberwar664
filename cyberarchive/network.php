@@ -1,18 +1,19 @@
 <?php
 
-if ($_POST['sourceTable'] == ''){
+if (isset($_POST['sourceTable'])){
+    $sourceTable = $_POST['sourceTable'];
+}
+else{
     $sourceTable = 'authors';
 }
-else{
-    $sourceTable = $_POST['sourceTable'] ;
-}
 
-if ($_POST['targetTable'] == ''){
+if (isset($_POST['sourceTable'])){
+    $targetTable = $_POST['targetTable'];
+}
+else{
     $targetTable = 'experts';
 }
-else{
-    $targetTable = $_POST['targetTable'] ;
-}
+
 
 switch($sourceTable)
 {
