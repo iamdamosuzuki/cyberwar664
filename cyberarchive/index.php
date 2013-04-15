@@ -12,6 +12,7 @@ include 'barchart.php';
 <a href='authority.php?table=attack_list'>Edit Attack List</a><br/>
 <a href='authority.php?table=actor_list'>Edit Actor List</a><br/>
 <a href='network.php'>Network Graph</a><br/>
+<a href='inbox.php'>Inbox</a><br/>
 
 </body>
 </html>

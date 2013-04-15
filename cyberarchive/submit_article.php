@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 
 	include 'config.php';
@@ -8,7 +8,7 @@
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}catch(PDOException $ex) {
 		echo 'Connection failed: ' . $ex->getMessage();
-	}
+	}	
 
 //Updates existing entries
 	if (isset($_GET['id'])){
@@ -69,13 +69,13 @@
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
-		$id = $db->lastInsertId();	
+	$id = $db->lastInsertId();	
 
 	$con = mysql_connect("localhost","cyberwar","cyberwar");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());
-	}
+	}}
 	
 	mysql_select_db("cyberwar_test");
 	
@@ -151,7 +151,7 @@
 			die('Error: ' . mysql_error());			
 
 		}
-	}
+	}}
 	
 	
 	#attack
@@ -171,7 +171,7 @@
 			die('Error: ' . mysql_error());			
 
 		}
-	}
+	}}
 	
 	#actor
 	foreach ($_POST['actor'] as $eachact){
@@ -201,7 +201,7 @@
 		if (!$result){
 			die('Error: ' . mysql_error());			
 		}
-	}
+	}}
 	
 	#expert
 	foreach ($_POST['expert'] as $eachexpt){
@@ -234,8 +234,8 @@
 		echo $query . "<br/>";
 		if (!$result){
 			die('Error: ' . mysql_error());			
-		}
-	}
+		} 
+	
 
 
 	echo "<a href='new_article.php'>New Article</a><br/>

@@ -11,72 +11,39 @@ session_destroy();
 define('API_KEY', '4f7c037903eb76bfe8cf733b608c4478:11:49914020');
 define('API_URL', 'http://api.nytimes.com/svc/search/v1/article?');
 
-// if (isset($_POST['search'])){
-    
-    
-//     if((!$_POST['name'])){
-    
-//         $_SESSION['status'] = 4;
-//         header('Location: index.php');
-//         return;
-        
-//     }else if(is_numeric($_POST['name'])){
-    
-//         $_SESSION['status'] = 7;
-//         header('Location: index.php');
-//         return;
-        
-//     }else{
-
-//         $name = mysql_real_escape_string($_POST['name']);
-        
-//         $query = "INSERT INTO author_list(name) VALUES
-//             ('$name')";
-        
-//         mysql_query($query)
-//             or die("insert failed " . mysql_error());
-        
-//         $_SESSION['status'] = 1;
-//         header('Location: index.php');
-//         return;
-// }}
-
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
       header('Location: index.php');
       
-      $a = 0;
       $b = 10;
 
-      $ch = curl_init();
 
-      while ($a < 10){
+  for($i = 0; $i < 10; $i++){
         $params = array(
             'api-key' => API_KEY,
             'query' => "$search",
-            'offset' => $a,
+            'offset' => $i,
             'fields' => 'date, byline, nytd_byline, title, nytd_title, url',
             );
 
-        print_r($params);
-        $a++;
+        $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, API_URL . http_build_query($params));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // curl_setopt($ch, CURLOPT_GETFIELDS, $data);
 
         $inf = curl_exec($ch);
-        }
-
-      curl_close($ch);
+        curl_close($ch);
 
       $output = json_decode($inf, true);
 
-      for($i = 0; $i < count($output['results']); $i++){
+      foreach($output['results'] as $article ){
         // print_r($output['results'][$i]); echo "<br /><br />";}
-        mysql_insert_array('Articles', $output['results'][$i]);}
-      return;
+        mysql_insert_array('Articles', $article);}
       }
+      unset($inf);
+      unset($output);}
+
 if (isset($_POST['clear'])){
       mysql_query('TRUNCATE TABLE Articles');
       $_SESSION['status'] = 2;

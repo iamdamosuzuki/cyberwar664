@@ -74,7 +74,7 @@
 	}
 //Provides "return to main page" option	
 	echo "<a href='index.php'>Return to main page</a>
-		 <form action='submit_article.php"; 
+		 <form action='submit_article.php'"; 
 
 //Provides options for creation of new aritcle. 	
 

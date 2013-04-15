@@ -1,5 +1,7 @@
 <?php
 
+require_once 'header.php';
+
 if (isset($_POST['sourceTable'])){
     $sourceTable = $_POST['sourceTable'];
 }
