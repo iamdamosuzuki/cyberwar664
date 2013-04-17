@@ -10,5 +10,5 @@ CREATE TABLE Articles (
   nytd_title VARCHAR(1024) NOT NULL,
   des_facet VARCHAR(1024) NOT NULL,
   nytd_des_facet VARCHAR(1024) NOT NULL,
-  url VARCHAR(1024) NOT NULL,
+  url VARCHAR(1024) NOT NULL
 );

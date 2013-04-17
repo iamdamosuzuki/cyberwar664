@@ -1,0 +1,96 @@
+** Below is a list of all of the documents in cyberarchive & their corresponding functionality. 
+
+PHP
+_____
+
+DATABASE SET UP
+
+- config.php : contains sensitive database configuration data and array of users authorized to do meta-database tasks.
+
+- util.php : draws in config.php to configure database; integrated into all other database documents.
+
+
+INDEX OF DATABASE
+
+- index.php : the main navigational page of the database. provides links to all other pages.
+
+
+ARTICLE FUNCTIONS
+
+- view_articles.php : presents the user with a list of hyper-linked articles, which redirect to each article's new_article page.
+
+- new_article.php : either returns the data of an already existent article (as linked from view_articles.php) and allows user to edit this data, or returns blank form that allows user to create new article. Allows authorized users to delete articles.
+
+- submit_article.php : the "submit" functionality from new_article.php -- inserts updated or new information into articles table.
+
+
+AUTHORITY TABLE FUNCTIONS
+
+- authority.php : returns the information of an authority table selected from index.php. allows user to insert new authority data, and prints list of existing hotlinked entries in selected authority table. when user edits authority table entry via edit_entry.php, authority.php takes that data and stores it in the table.
+
+- edit_entry.php : linked from selected authority table via authority.php. allows user to edit, and authorized users to delete, existing authority table entry. prints a list of all articles that are linked to selected authority table entry.
+
+
+DELETE FUNCTIONS
+
+- delete.php : allows authorized users to delete authority table entries.
+
+- delete_article.php : allows authorized users to delete articles.
+
+
+ADMIN ONLY PHP PAGES
+
+- admin.php : allows authorized users to access admin page, wherefrom they can access a variety of meta-database-related functions.
+
+- clean_all.php : allows authorized users to "clean" the database--- this page prints information that will be deleted using the corresponding functionality, clean_all_delete.
+
+- clean_all_delete.php : concludes the database cleaning process -- deletes the entries printed in clean_all.php.
+
+- mergeAuth.php begins the merging functions. It is linked via admin.php, and only certain users have access. It prints lists of authority tables; the user selects which titles she would like to begin merging.
+
+- mergeAuth2.php prints the titles selected in mergeAuth.php as radio buttons; the user selects which title she would like to merge the selected into.
+
+- mergeAuth3.php prints the selected title as a edit-able entry, and it prints the name and description of the titles that will be merged into the editable entry.
+
+- mergeAuth4.php deletes the titles that are being merged and saves the updated version of the title that the deleted entries were merged into. It prints out all of these steps, and it provides links back to the main page.
+
+*********
+
+STATIC FOLDER:
+-------------
+- contains javascript and CSS files called in util.php (many of the below)
+
+*************
+
+CSS
+_______ 
+- cyberarchive_back.css provides css formatting for the backend of the cyberarchive.
+
+*************
+
+
+JAVASCRIPT FUNCTIONS
+____________________
+
+MERGING
+- accordion.js is the "accordion" function called in mergeAuth.php
+
+- jquery.redirect.min.js and jquery.redirect.js pass data between mergeAuth.php pages. .
+
+
+CONFIRMING
+- These functions are embedded in util.php and called throughout the database as confirmations of actions.
+
+- confirmClean.js : asks the user to confirm that she wants to clean the database.
+
+- confirmDel.js : asks the user to confirm that she wants to delete an article.
+
+
+MOVING
+- moveFunction2.js creates move functionality utilized in new_article.php and mergeAuth.php, that is, it moves authority table options between two selection boxes.
+
+
+TABLE SORTING
+- sortTable.js initiaties the script in jquery.tablesort that sort the table in view_aritcles.php
+-jquery.tablesort is the jquery plugin that contains jquery-latest.js and tablesorter.js, which sort the table.
+- both are housed in jquery.tablesort folder in static folder

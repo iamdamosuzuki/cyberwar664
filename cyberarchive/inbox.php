@@ -7,11 +7,10 @@ include_once 'config.php';
 // API key from NYT dev account
 define('API_KEY', '4f7c037903eb76bfe8cf733b608c4478:11:49914020');
 define('API_URL', 'http://api.nytimes.com/svc/search/v1/article?');
-
+$table = 'Inbox';
 
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
-      header('Location: index.php');
 
   for($i = 0; $i < 10; $i++){
         $params = array(
@@ -34,36 +33,18 @@ if (isset($_POST['search'])){
 
       foreach($output['results'] as $article ){
         // print_r($output['results'][$i]); echo "<br /><br />";}
-        mysql_insert_array('Articles', $article);}
+        mysql_insert_array($table, $article);}
       }
       unset($inf);
       unset($output);}
 
-if (isset($_POST['clear'])){
-      mysql_query('TRUNCATE TABLE Articles');
-      header('Location: index.php');
-      return;
-}
-
 include_once 'header.php';
 
- 
-echo "<h1>NYT API TEST DATABASE</h1>";
-
-echo <<<_OUT
-<h2>search</h2>
-<form method='post'>
-<input  type='text' name='search'><br /><br /> 
-<input id='button' type='submit' value='search'>
-</form>
-<form method='post'>
-<input type='hidden' name='clear' value='true'>
-<input id='button' type='submit' name='clear' value='clear table'>
-</form>
-_OUT;
-
-
-
+if (isset($_POST['clear'])){
+      mysql_query("TRUNCATE TABLE $table");
+      header('Location: inbox.php');
+      return;
+}
 
 function mysql_insert_array($table, $data, $exclude = array()) {
 
@@ -93,10 +74,24 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 
 }
 
-// builds the table based on the database data
-echo "<table><tr><th></th><th></th></tr>";
+echo "<h1>NYT API TEST DATABASE</h1>";
 
-$query = "SELECT * FROM Inbox";
+echo <<<_OUT
+<h2>search</h2>
+<form method='post'>
+<input  type='text' name='search'><br /><br /> 
+<input id='button' type='submit' name='search' value='search'>
+</form>
+<form method='post'>
+<input type='hidden' name='clear' value='true'>
+<input id='button' type='submit' name='clear' value='clear table'>
+</form>
+_OUT;
+
+// builds the table based on the database data
+echo "<table border='1'>";
+
+$query = "SELECT * FROM $table";
 $result = mysql_query($query);
 if($result){ $rows = mysql_num_rows($result);
 
