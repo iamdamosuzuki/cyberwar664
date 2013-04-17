@@ -61,3 +61,7 @@ th.headerSortDown {
     background-color:  #00FF00; 
 }
 
+table{
+
+    border-collapse: collapse;
+}
