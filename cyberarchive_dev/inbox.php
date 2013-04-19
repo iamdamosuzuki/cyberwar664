@@ -159,4 +159,5 @@ function format_name($name) {
 
 echo "</table>";
 unset($_POST['clear']);
+echo "</body></html>";
 ?>
