@@ -120,8 +120,10 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
 <br />
 <form name='networkInput' action='network.php' method='post' onchange='this.form.submit()'>
     $sourceDrop
+    <img src= "static/BlueCircle.png">
     <br />
     $targetDrop
+    <img src= "static/OrangeCircle.png">
     <br />
     <input type='submit' value='Submit' />
 </form>
