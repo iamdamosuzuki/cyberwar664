@@ -1,6 +1,5 @@
 /*css document for backend of cyberarchive. */
 
-
 /* below are general settings for entire backend*/
 body{
     font-family: helvetica, arial, sans-serif;
@@ -28,6 +27,42 @@ h1{
     font-family: helvetica, arial, sans-serif;
     size: 20px;
     letter-spacing: .1em; 
+    
+}
+
+#header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 120px;
+    padding: 0;
+    margin: -21px 0 0 0;
+    background: rgb(57,70,17); /* Old browsers */
+    background: -moz-linear-gradient(left, rgba(57,70,17,1) 0%, rgba(57,70,17,1) 48%, rgba(56,114,63,1) 48%, rgba(56,114,63,1) 72%, rgba(95,156,102,1) 72%, rgba(95,156,102,1) 91%, rgba(149,202,155,1) 91%, rgba(149,202,155,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(57,70,17,1)), color-stop(48%,rgba(57,70,17,1)), color-stop(48%,rgba(56,114,63,1)), color-stop(72%,rgba(56,114,63,1)), color-stop(72%,rgba(95,156,102,1)), color-stop(91%,rgba(95,156,102,1)), color-stop(91%,rgba(149,202,155,1)), color-stop(100%,rgba(149,202,155,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%);
+}
+
+#header h1 {
+    width: 40%;
+    padding: 50px 0 0 20px;
+}
+
+#header img{
+    height: 90px;
+    display: inline;
+    float: right;
+    margin: -100px 0 0 0;
+    padding: 0 25px 0 0;
+}
+
+#container{
+    margin: 120px 0 0 20px;
+    padding: 0 0 0 0;
     
 }
 
@@ -64,6 +99,6 @@ th.headerSortDown {
 svg.network {
 
     border: 1px solid #009300;
-    margin: 25px;
+    margin: 100px 25px;
 }
 
