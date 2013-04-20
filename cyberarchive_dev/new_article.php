@@ -6,6 +6,19 @@
 	
 	echo "<body>";
 // If article already exists, pulls its already-entered data from various authority tables
+	
+	if(isset($_GET['temp_id'])){
+
+		try{
+			$temp_id = $_GET['temp_id'];
+			$query = "SELECT * FROM Inbox WHERE temp_id = $temp_id";
+			$result = $db->prepare($query);
+			$result->execute();
+			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
+			} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
+
 	if(isset($_GET['id'])){
 	//fetches article data with article id
 		try{
@@ -13,7 +26,7 @@
 			$sql ="SELECT * FROM `articles` WHERE `id`=". $_GET['id'];
 			$result = $db->prepare($sql);
 			$result->execute();
-			$curart = $result->fetch(PDO::FETCH_ASSOC);
+			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
 			} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
 			}
@@ -107,10 +120,10 @@
 	//Note that the New York Times is the only current option for source
 	//Provides option for article source, title, url, data, and "about" 
 	echo"</select><br/>Source: <select id='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' id='title' 
-	size='100' value='" . $curart['title'] . "'/>
-	<br/>Date(YYYY-MM-DD):<input type='text' id='date' value='" . $curart['date'] . "'/><br/>
-	URL:<input type='text' id='url' size='100' value='" . $curart['url'] . 
-	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' id='text'>" . $curart['text'] . 
+	size='100' value='" . $crnt_article['title'] . "'/>
+	<br/>Date(YYYY-MM-DD):<input type='text' id='date' value='" . $crnt_article['date'] . "'/><br/>
+	URL:<input type='text' id='url' size='100' value='" . $crnt_article['url'] . 
+	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' id='text'>" . $crnt_article['text'] . 
 	"</textarea><br/>";
 	
 
