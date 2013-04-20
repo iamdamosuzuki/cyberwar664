@@ -46,13 +46,19 @@ if (isset($_POST['search'])){
         curl_close($ch);
 
       $output = json_decode($inf, true);
+      $default_fields = array(
+          'source' => 'nyt',
+          'text' => 'chunks',
+        );
 
+      $j = 1;
       foreach($output['results'] as $article ){
-        // print_r($output['results'][$i]); echo "<br /><br />";}
-        mysql_insert_array($table, $article);}
+        mysql_insert_array($table, $article);
+        mysql_query("UPDATE $table SET source='nyt', text='chunks' WHERE temp_id= '$j'");
+        $j++;
       }
       unset($inf);
-      unset($output);}
+      unset($output);}}
 
 if (isset($_POST['clear'])){
       mysql_query("TRUNCATE TABLE $table");
@@ -88,14 +94,26 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 }
 
 // test code for a simple keyword search function
-echo "<h1>NYT API TEST DATABASE</h1>";
-echo "<h2>search</h2>";
-echo "<form method='post'>";
-echo "<input type='text' name='search'>";
-echo "<input type='submit' value='search'></form><br /><br />";
-echo "<form method='post'>";
-echo  "<input type='hidden' name='clear' value='true'>";
-echo  "<input id='button' type='submit' name='clear' value='clear table'> </form>";
+echo <<< _FORM
+<h1>NYT API TEST DATABASE</h1>
+<h2>search</h2>
+<form method='post'>
+keyword: <input type='text' name='search'>
+_FORM;
+
+echo " begin date: <input type='text' value='" . date('Y-m-d', strtotime($last_update)) . "' name='begin_date'>";
+echo " end date: <input type='text' value='" . date('Y-m-d', strtotime($today)) . "' name='end_date'>";
+
+echo <<< _FORM2
+<br /><br />
+<input type='submit' value='search'></form>
+<br /><br />
+<form method='post'>
+<input type='hidden' name='clear' value='true'>
+<input type='submit' name='clear' value='clear table'> </form>
+<br /><br />
+_FORM2;
+
 
 // builds the table based on the database data
 echo "<table border='1'>";
@@ -123,12 +141,13 @@ if($result){ $rows = mysql_num_rows($result);
       }
       echo "<td><form method='post'>
             <input type='submit' name='add' value='add'>
-            <input type='hidden' name='id' value='$row[0]'>
+            <input type='hidden' name='temp_id' value='$row[0]'>
             <input type='hidden' name='date' value='$row[1]'>
             <input type='hidden' name='name' value='$row[2]'>
             <input type='hidden' name='title' value='$row[3]'>
             <input type='hidden' name='url' value='$row[4]'>
             </form></td>";
+      echo "<td><a href='new_article.php?&temp_id=$row[0]'>add</a></td>";
       }
     }
 

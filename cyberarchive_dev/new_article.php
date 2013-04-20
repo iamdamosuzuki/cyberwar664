@@ -6,20 +6,9 @@
 	
 	echo "<body>";
 // If article already exists, pulls its already-entered data from various authority tables
-	
-	if(isset($_GET['temp_id'])){
-
-		try{
-			$temp_id = $_GET['temp_id'];
-			$query = "SELECT * FROM Inbox WHERE temp_id = $temp_id";
-			$result = $db->prepare($query);
-			$result->execute();
-			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
-			} catch(PDOException $ex) {
-			echo 'Connection failed: ' . $ex->getMessage();
-			}
 
 	if(isset($_GET['id'])){
+		echo "chunks";
 	//fetches article data with article id
 		try{
 			$id = $_GET['id'];
@@ -31,6 +20,19 @@
 			echo 'Connection failed: ' . $ex->getMessage();
 			}
 	}
+
+	
+	if(isset($_GET['temp_id'])){
+		try{
+			$temp_id = $_GET['temp_id'];
+			$query = "SELECT * FROM Inbox WHERE temp_id = $temp_id";
+			$result = $db->prepare($query);
+			$result->execute();
+			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
+			} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
+
 	//Provides "return to main page" option	
 	echo "<a href='index.php'>Return to main page<br/></a><br/>";
 	
@@ -77,7 +79,7 @@
 			$table2 = $table . "_list";
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
-			}
+			}}
 	
 		//prints out each left-hand "selection box" (i.e. all existing "options" in an authority table that will be selected by the user and moved to the right)
 		echo "<tr><td class=formfield>$table: <select multiple id='select1$table' multiple size='10' style='width:400;'>";
