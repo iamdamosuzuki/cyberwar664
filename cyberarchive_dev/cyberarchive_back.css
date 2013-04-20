@@ -61,3 +61,8 @@ th.headerSortDown {
     background-color:  #00FF00; 
 }
 
+svg.network {
+
+    border: 1px solid #000;
+}
+
