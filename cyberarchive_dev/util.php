@@ -7,9 +7,8 @@
 <html lang="en">
 <head>
 <title>SI664 Cyberwarfare Database</title>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-<link rel="stylesheet" href="colorbox.css" />
 <link rel="stylesheet" href="cyberarchive_back.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script src="lib/jquery.colorbox.js"></script>
@@ -154,6 +153,9 @@ _OUT;
      echo "<script type='text/javascript' src='static/jquery.tablesorter/jquery-latest.js'></script>";
      echo "<script type='text/javascript' src='static/jquery.tablesorter/jquery.tablesorter.js'></script>";
      echo "<script type='text/javascript' src='static/sortTable.js'></script>";
+
+     echo"<div id='header'><h1>THE CYBERARCHIVE</h1><a href='index.php'><img src='static/sad_mac.png' /></a></div>";
+
 
      
     

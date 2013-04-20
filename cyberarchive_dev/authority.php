@@ -7,10 +7,15 @@
 	echo "<body>";
 	
 	//creates variables for document and fetches correct table and entry id information
+
 	$table = $_GET['table'];	
-	$id = $_GET['id'];	
-	$name = $_POST['name'];
-	$about = $_POST['about'];
+
+	if(isset($_GET['id'])){
+
+		$id = $_GET['id'];	
+		$name = $_POST['name'];
+		$about = $_POST['about'];
+	}
 
 	//prints "return to main page" link and creates form to be filled with new or updated entry information. 	
 	echo "<a href='index.php'>Return to main page</a>";
@@ -21,7 +26,7 @@
 		<input type='submit' value='Submit'/></form>";
 
 	//For new entry, creates new entry in authority table, inserting "name" and "about" information into table. 
-	if(isset($_POST['name']) & $_POST['name'] != ""){
+	if(isset($_POST['name']) && $_POST['name'] != ""){
 			try{
 		// because double and single quotation marks / apostrophes are printed with the "escape" backslash when run through php to html, this section uses reg ex's to delete the escape character, both in "name" and in "about" 
 			$name = quoteFixDoub($name);

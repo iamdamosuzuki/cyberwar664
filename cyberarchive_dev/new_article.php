@@ -1,145 +1,348 @@
 <?PHP
-// This document allows users to create a new article or edit articles in the database. It allows authorized users to delete article entries. 
 
-//Includes util.php document, which sets up database connection and includes config.php
-	include 'util.php';
+	include'util.php';
+
 	
-	echo "<body>";
-// If article already exists, pulls its already-entered data from various authority tables
+	// set up database connection
+	
+	try{
+		$db = new PDO($dsn, $user, $password);
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}	catch(PDOException $ex) {
+		echo 'Connection failed: ' . $ex->getMessage();
+	}
 
+	
+	
+	//If there is a previous post for editing pull the data
 	if(isset($_GET['id'])){
-		echo "chunks";
-	//fetches article data with article id
 		try{
-			$id = $_GET['id'];
 			$sql ="SELECT * FROM `articles` WHERE `id`=". $_GET['id'];
 			$result = $db->prepare($sql);
 			$result->execute();
-			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
-			} catch(PDOException $ex) {
-			echo 'Connection failed: ' . $ex->getMessage();
-			}
-	}
-
-	
-	if(isset($_GET['temp_id'])){
-		try{
-			$temp_id = $_GET['temp_id'];
-			$query = "SELECT * FROM Inbox WHERE temp_id = $temp_id";
-			$result = $db->prepare($query);
-			$result->execute();
-			$crnt_article = $result->fetch(PDO::FETCH_ASSOC);
+			$curart = $result->fetch(PDO::FETCH_ASSOC);
 			} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
 			}
 
-	//Provides "return to main page" option	
-	echo "<a href='index.php'>Return to main page<br/></a><br/>";
-	
-	//begins submit_data javascript function, which is incorporated into the lines of php below. 
-	echo "<script type='text/javascript'>function submit_data(){
-	";
-	
-	//creates an array for each authority table, into which is pushed each selection "option" (i.e. entry in authority table, such as each author, attack, etc.)
-	foreach($tables as $table){
-		echo $table . "_data = [];
-		$('#select2" . $table . " option').each(function()
-                {
-                   " . $table . "_data.push($(this).val());
-                });
-		";
-	}
-	
-	// encodes quotation marks to hmtl character to avoid value='""' html bug; sets new variable for title value. 
-	echo "var nuTitle = $('#title').val().replace(/'/g, '&#39;');";	
-		
-	//if the article id is already set (if article is being updated and is not new), passes article id to submit_data.php
-	if(isset($id)){
-		echo "$.post('submit_article.php?id=";
-		echo $id . "'";
-	} else {
-		//if article is new, passes no id to submit_article.php
-		echo "$.post('submit_article.php'";
-	}
-	echo ",{";
-	
-	//creates named arrays that correspond to each $table_data array created above. 
-	foreach($tables as $table){
-		echo $table . ":" . $table . "_data,";
-	}
-	//locates source, title, data, url, etc., components using their html id tags. 
-	echo "title:nuTitle,source:$('#source').val(),date:$('#date').val(),url:$('#url').val(),text:$('#text').val()},function(result){alert('success!');window.location = 'view_articles.php';});}</script>";
-
-	//begins the table. 
-	echo"<table border=0>";
-	
-	//creates $table_list variable, which will be used to pull information from authors_table, attacks_table, etc in the database. 
-	foreach ($tables as $table){
-		try{
-			$table2 = $table . "_list";
-		} catch(PDOException $ex) {
-			echo 'Connection failed: ' . $ex->getMessage();
-			}}
-	
-		//prints out each left-hand "selection box" (i.e. all existing "options" in an authority table that will be selected by the user and moved to the right)
-		echo "<tr><td class=formfield>$table: <select multiple id='select1$table' multiple size='10' style='width:400;'>";
 		
 		try{
-			$sql = "SELECT * FROM `$table2` ORDER BY `name`";
-			foreach ($db->query($sql) as $row) {
-				echo "<option value='". $row['id']. "'";
-				echo ">" . $row['name'] . "</option>";
-				}
-		} catch(PDOException $ex) {
-			echo 'Connection failed: ' . $ex->getMessage();
-		}
-		echo "</select></td>";
-		
-		// prints out "selection" buttons: "add", "remove", & "remove all"
-		
-		echo"<td><a href='#a' class='add' id='moveFunction' reftable='$table'>add &gt;&gt;</a><br/>
-		<a href='#a' class='remove' id='moveFunction' reftable='$table'>&lt;&lt; remove</a><br/>
-		<a href='#a' class='removeAll' id='moveFunction' reftable='$table'>&lt;&lt; remove all</a></td>";
-		
-		// prints out right-hand "selected" boxes for each table, i.e. all features that belong to the specific article entry. Items from the first (left-hand) box are moved here using the above selection buttons. 
-		echo "<td><select multiple id='select2$table' reftable='$table' multiple size='10' style='width:400;'>";
-		// for existing (updated) articles, populates each box with the corresponding data. 
-		if(isset($_GET['id'])){
-			try{
-			$sql ="SELECT * FROM $table2 LEFT JOIN ($table) ON ($table2.id = $table.id) WHERE $table.article = $id ORDER BY `name`"; 
+			$sql ="SELECT `author` FROM `authors` WHERE `article`=". $_GET['id'];
 			foreach ($db->query($sql) as $row){
-				echo "<option value='". $row['id'] . "'";
-				echo ">" . $row['name'] . "</option>";
+				$curauths[$row['author']] = 1;
 			}
 		} catch(PDOException $ex) {
 			echo 'Connection failed: ' . $ex->getMessage();
-		}
-		}
-	echo "</select></td></tr>";
+			}
+		
+		
+		try{
+			$sql ="SELECT `attack` FROM `attacks` WHERE `article`=". $_GET['id'];
+			foreach ($db->query($sql) as $row){
+				$curattacks[$row['attack']] = 1;
+			}
+		} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
+
+		try{
+			$sql ="SELECT `actor` FROM `actors` WHERE `article`=". $_GET['id'];
+			foreach ($db->query($sql) as $row){
+				$curacts[$row['actor']] = 1;
+			}
+		} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
+		
+		try{
+			$sql ="SELECT `expert` FROM `experts` WHERE `article`=". $_GET['id'];
+			foreach ($db->query($sql) as $row){
+				$curexpts[$row['expert']] = 1;
+			}
+		} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
+		
+		try{
+			$sql="SELECT `tech` FROM `tech` WHERE `article`=". $_GET['id'];
+			foreach ($db->query($sql) as $row){
+				$curtech[$row['tech']] = 1;
+			}
+		} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+			}
 	}
-	echo "</table>";
+//Provides "return to main page" option	
+	echo "<a href='index.php'>Return to main page</a>";
+
+//Provides options for creation of new aritcle. 	
+
+
+	$con = mysql_connect("localhost","cyberwar","cyberwar");
+	if (!$con)
+	{
+		die('Could not connect: ' . mysql_error());
+	}
 	
-	//Note that the New York Times is the only current option for source
-	//Provides option for article source, title, url, data, and "about" 
-	echo"</select><br/>Source: <select id='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' id='title' 
-	size='100' value='" . $crnt_article['title'] . "'/>
-	<br/>Date(YYYY-MM-DD):<input type='text' id='date' value='" . $crnt_article['date'] . "'/><br/>
-	URL:<input type='text' id='url' size='100' value='" . $crnt_article['url'] . 
-	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' id='text'>" . $crnt_article['text'] . 
-	"</textarea><br/>";
+	mysql_select_db("cyberwar_test");
+	
+	#if there is a previous post for editing pull the data
+	if(isset($_GET['id'])){
+		$query ="SELECT * FROM `articles` WHERE `id`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		$curart = mysql_fetch_array($result);
+		
+		$query ="SELECT `author` FROM `authors` WHERE `article`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		while ($row = mysql_fetch_array($result)){
+			$curauths[$row['author']] = 1;
+		}
+		
+		$query ="SELECT `attack` FROM `attacks` WHERE `article`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		while ($row = mysql_fetch_array($result)){
+			$curattacks[$row['attack']] = 1;
+		}
+
+		$query ="SELECT `actor` FROM `actors` WHERE `article`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		while ($row = mysql_fetch_array($result)){
+			$curacts[$row['actor']] = 1;
+		}
+	
+		$query ="SELECT `expert` FROM `experts` WHERE `article`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		while ($row = mysql_fetch_array($result)){
+			$curexpts[$row['expert']] = 1;
+		}
+		
+		$query ="SELECT `tech` FROM `tech` WHERE `article`=". $_GET['id'];
+		$result = mysql_query($query);
+		if (!$result){
+			die('Error: ' . mysql_error());			
+		}
+		while ($row = mysql_fetch_array($result)){
+			$curtech[$row['tech']] = 1;
+		}
+	}
+	
+	// echo "<a href='index.php'>Return to main page</a>
+echo		 "<form action='submit_article.php"; 
 	
 
-	
-	//provides submit and delete options. submit options runs the above-embedded function submit_data() and returns submit_article, which redirects the page. Delete option pulls in delete_article.php, which deletes the article. 
-	try{
-		echo "<form action='javascript:submit_data()' method='post'><input type='submit' value='Submit'/></form><br/>";
-		echo "<form action='delete_article.php?id=$id' method='post' onclick='return testConfirm();'><input type='submit' value='Delete'/></form>";
-	
-	} catch(PDOException $ex){
-		echo 'Connection failed: ' . $ex->getMessage();
+	if(isset($_GET['id'])){
+		echo "?id=" . $_GET['id'];
 	}
 	
-	echo "</body>";
-	//closes database connection
+	echo "' method='post'> Author: 
+	<input id='authorBox' type='text' name='author'><br /><br />  
+	<select name='author[]' id='authorSelect' size='10' multiple='multiple'>";
+
+	try{
+		$sql = "SELECT * FROM `author_list` ORDER BY `name`";
+		foreach ($db->query($sql) as $row) {
+			echo "<option value='". $row['id']. "'";
+			if (isset($curauths[$row['id']])){
+				echo " selected='selected'";
+			}
+			echo ">" . $row['name'] . "</option>";
+			}
+	} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+		}
+	
+	echo "</select><br/>Attack:
+	<input id='attackBox' type='text' name='attack'><br /><br />  
+	<select name='attack[]' id='attackSelect' size='10' multiple='multiple'>";
+
+	try{
+		$sql = "SELECT * FROM `attack_list` ORDER BY `name`";
+		foreach ($db->query($sql) as $row){
+			echo "<option value='". $row['id']. "'";
+			if (isset($curattacks[$row['id']])){
+				echo " selected='selected'";
+			}
+			echo ">" . $row['name'] . "</option>";
+		}
+	} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+		}
+	
+	echo "</select><br/>Actor: 
+	<input id='actorBox' type='text' name='actor'><br /><br />  
+	<select name='actor[]' id='actorSelect' size='10' multiple='multiple'>";
+
+	try{
+		$sql = "SELECT * FROM `actor_list` ORDER BY `name`";
+		foreach ($db->query($sql) as $row){
+			echo "<option value='". $row['id']. "'";
+			if (isset($curacts[$row['id']])){
+				echo " selected='selected'";
+			}
+			echo ">" . $row['name'] . "</option>";
+		}
+	} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+		}
+		
+	echo "</select><br/>Expert: 
+	<input id='expertBox' type='text' name='expert'><br /><br />  
+	<select name='expert[]' id='expertSelect' size='10' multiple='multiple'>";
+
+	try{
+		$sql = "SELECT * FROM `expert_list` ORDER BY `name`";
+		foreach ($db->query($sql) as $row){
+			echo "<option value='". $row['id']. "'";
+			if (isset($curexpts[$row['id']])){
+				echo " selected='selected'";
+			}
+		echo ">" . $row['name'] . "</option>";
+		}
+	} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+		}
+		
+	echo "</select><br/>Tech:
+	<input id='techBox' type='text' name='tech'><br /><br />  
+	<select name='tech[]' id='techSelect' size='10' multiple='multiple'>";
+
+	try{
+		$sql = "SELECT * FROM `tech_list` ORDER BY `name`";
+		foreach ($db->query($sql) as $row){
+			echo "<option value='". $row['id']. "'";
+			if (isset($curtech[$row['id']])){
+				echo " selected='selected'";
+			}
+			echo ">" . $row['name'] . "</option>";
+		}
+	} catch(PDOException $ex) {
+			echo 'Connection failed: ' . $ex->getMessage();
+		}
+
+	//Note that ote New york times is the only current option for source
+	//Provides option for article source, title, url, data, and "about"; submits form. 
+
+// $query = "SELECT * FROM `author_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curauths[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+
+
+// echo "</select><br/>Attack:
+// <input id='textbox' type='text' name='attack'><br /><br />  
+// <select name='attack[]' id='select' size='10' multiple='multiple'>";
+
+// $query = "SELECT * FROM `attack_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curattacks[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+
+// echo "</select><br/>Actor: 
+// <input id='textbox' type='text' name='actor'><br /><br />  
+// <select name='actor[]' id='select' size='10' multiple='multiple'>";
+
+// $query = "SELECT * FROM `actor_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curacts[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+
+// echo "</select><br/>Expert: 
+// <input id='textbox' type='text' name='expert'><br /><br />  
+// <select name='expert[]' id='select' size='10' multiple='multiple'>";
+
+// $query = "SELECT * FROM `expert_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curexpts[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+// echo "</select><br/>Tech:
+// <input id='textbox' type='text' name='tech'><br /><br />  
+// <select name='tech[]' id='select' size='10' multiple='multiple'>";
+
+// $query = "SELECT * FROM `tech_list` ORDER BY `name`";
+// $result = mysql_query($query);
+// if (!$result){
+// 	die('Error: ' . mysql_error());			
+// }
+
+// while($row = mysql_fetch_array($result)){
+
+// 	echo "<option value='". $row['id']. "'";
+// 	if (isset($curtech[$row['id']])){
+// 		echo " selected='selected'";
+// 	}
+// 	echo ">" . $row['name'] . "</option>";
+// }
+
+	
+	#note New york times is the only current option for source
+	
+
+	echo"</select><br/>Source: <select name='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' name='title' 
+	value='" . $curart['title'] . "'/>
+	<br/>Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/>
+	URL:<input type='text' name='url' size='100' value='" . $curart['url'] . 
+	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . 
+	"</textarea><br/><input type='submit' value='Submit'>
+	</form>";
+
+	
 	$db = null;
+
+
+
+	
+	
+	mysql_close($con);
+	echo"</body></html>";
 ?>

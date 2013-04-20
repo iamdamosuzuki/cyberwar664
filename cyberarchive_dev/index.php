@@ -3,7 +3,8 @@ include 'util.php';
 include 'barchart.php';
 ?>
 
-<h1>THE CYBERARCHIVE</h1>
+
+<div id='container'>
 <a href='new_article.php'>New Article</a><br/>
 <a href='view_articles.php'>View/Edit Article List</a><br/>
 <a href='authority.php?table=author_list'>Edit Author List</a><br/>
@@ -13,6 +14,7 @@ include 'barchart.php';
 <a href='authority.php?table=actor_list'>Edit Actor List</a><br/>
 <a href='network.php'>Network Graph</a><br/>
 <a href='inbox.php'>Inbox</a><br/>
+</div>
 
 </body>
 </html>
