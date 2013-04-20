@@ -13,15 +13,9 @@ $today = date('Ymd',time());
 $query = "SELECT date FROM Options WHERE id = 1";
 $result = mysql_query($query);
 $last_update = mysql_fetch_array($result)['date'];
-
-$last_update = 20130320;
+// $last_update = 20130320;
 
 if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
-
-// mysql_query("INSERT INTO Options(date) VALUES $last_update"); echo'chunks';
-
-// var_dump(mysql_fetch_array($result));
-
 
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
@@ -96,6 +90,7 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 // test code for a simple keyword search function
 echo <<< _FORM
 <h1>NYT API TEST DATABASE</h1>
+<a href="index.php">back</a>
 <h2>search</h2>
 <form method='post'>
 keyword: <input type='text' name='search'>
