@@ -1,6 +1,7 @@
 <?PHP
 
-	include'util.php';
+include 'util.php';
+include 'header.php';
 
 	
 	// set up database connection
@@ -142,6 +143,9 @@
 	}
 	
 	// echo "<a href='index.php'>Return to main page</a>
+
+
+echo	"<div id='container'>";	
 echo		 "<form action='submit_article.php"; 
 	
 
@@ -344,5 +348,5 @@ echo		 "<form action='submit_article.php";
 	
 	
 	mysql_close($con);
-	echo"</body></html>";
+	echo"</div></body></html>";
 ?>

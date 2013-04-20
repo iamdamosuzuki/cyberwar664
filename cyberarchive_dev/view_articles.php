@@ -3,7 +3,9 @@
 	
 	// includes util.php, which opens the database connection and includes config.php
 	include 'util.php';
+	include 'header.php';
 	echo "<body>";
+	echo	"<div id='container'>";
 	
 	//Pulls lists of articles, ordered by source and date. 	
 	try{

@@ -1,5 +1,6 @@
 <?php
 include 'util.php';
+include 'header.php';
 
 //NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
 
@@ -13,7 +14,7 @@ $today = date('Ymd',time());
 $query = "SELECT date FROM Options WHERE id = 1";
 $result = mysql_query($query);
 $last_update = mysql_fetch_array($result)['date'];
-// $last_update = 20130320;
+$last_update = 20130320;
 
 if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
 
@@ -88,8 +89,9 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 }
 
 // test code for a simple keyword search function
+echo  "<div id='container'>";
 echo <<< _FORM
-<h1>NYT API TEST DATABASE</h1>
+<h1>NYT API INBOX</h1>
 <a href="index.php">back</a>
 <h2>search</h2>
 <form method='post'>
@@ -173,5 +175,5 @@ function format_name($name) {
 
 echo "</table>";
 unset($_POST['clear']);
-echo "</body></html>";
+echo "</div></body></html>";
 ?>

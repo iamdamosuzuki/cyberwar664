@@ -2,9 +2,9 @@
 // This document provides users with ability to edit selected authority table entries. It allows authorized users to delete these entries. It displays the information of the selected entry, including a list of articles that the selected entry is linked to.
 
 // includes database setup and config.php
-	include 'util.php';
-	
-	echo "<body>";
+include 'util.php';
+include 'header.php';
+
 //fetches appropriate authority_list table, id of selected entry to edit
 	$table = $_GET['table'];
 	$id = $_GET['entryid'];
@@ -12,6 +12,8 @@
 	$about = $_POST['about'];
 
 //fetches selected entry from authority_list table
+	echo	"<div id='container'>";
+
 	echo "Return to <a href='index.php'>main page.</a><br/>";
 	echo "Return to <a href='authority.php?table=$table'>edit $table.</a><br/><br/>";
 	echo $table;
@@ -64,8 +66,9 @@
 		}
 		
 	echo "</table><br/><br/>";
+	echo "</div>";
 	echo "</body>";
-	
+	echo "</html>";
 //closes database connection	
 	$db = null;
 ?>

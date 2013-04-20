@@ -3,9 +3,8 @@
 	
 	// includes util.php, which sets up database connection and includes config.php.
 	include 'util.php';
-	
-	echo "<body>";
-	
+	include 'header.php';
+		
 	//creates variables for document and fetches correct table and entry id information
 
 	$table = $_GET['table'];	
@@ -17,7 +16,9 @@
 		$about = $_POST['about'];
 	}
 
-	//prints "return to main page" link and creates form to be filled with new or updated entry information. 	
+	//prints "return to main page" link and creates form to be filled with new or updated entry information.
+	echo	"<div id='container'>";
+ 	
 	echo "<a href='index.php'>Return to main page</a>";
 	echo "<form action='authority.php?table=$table&update=f' method='post'>Input entry for table: $table <br/>
 		If you are entering a name, enter it in the format: Last Name COMMA First Name<br/>
@@ -73,9 +74,10 @@
 		echo 'Connection failed: ' . $ex->getMessage();
 	}
 	
+	echo "</div";
 	echo "</table>";
 	echo "</body>";
-	
+	echo "</html>";
 	//closes database connection
 	$db = null;
 ?>

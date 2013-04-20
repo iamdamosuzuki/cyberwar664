@@ -1,6 +1,7 @@
 <?php
 
-require_once 'util.php';
+include 'util.php';
+include 'header.php';
 
 if (isset($_POST['sourceTable'])){
     $sourceTable = $_POST['sourceTable'];

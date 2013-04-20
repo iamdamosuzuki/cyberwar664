@@ -1,5 +1,6 @@
 <?php 
 include 'util.php';
+include 'header.php';
 include 'barchart.php';
 ?>
 
