@@ -60,7 +60,7 @@ switch($targetTable)
 echo <<<_END
 <script>
 var width = 960,
-    height = 700;
+    height = 600;
 
 var color = d3.scale.category10();
 
@@ -118,7 +118,7 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
 <a href='index.php'>Return to main menu</a>
 <br />
 <br />
-<form name='networkInput' action='network.php' method='post' onchange='this.form.submit()'>
+<form id='netForm' name='networkInput' action='network.php' method='post' onchange='this.form.submit()'>
     $sourceDrop
     <img src= "static/BlueCircle.png">
     <br />
