@@ -183,7 +183,7 @@ echo		 "<form action='submit_article.php";
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 	
-	echo "</select><br/>Attack:
+	echo "</select><br/><br/>Attack:
 	<input id='attackBox' type='text' name='attack'><br /><br />  
 	<select name='attack[]' id='attackSelect' size='10' multiple='multiple'>";
 
@@ -200,7 +200,7 @@ echo		 "<form action='submit_article.php";
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 	
-	echo "</select><br/>Actor: 
+	echo "</select><br/><br/>Actor: 
 	<input id='actorBox' type='text' name='actor'><br /><br />  
 	<select name='actor[]' id='actorSelect' size='10' multiple='multiple'>";
 
@@ -217,7 +217,7 @@ echo		 "<form action='submit_article.php";
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 		
-	echo "</select><br/>Expert: 
+	echo "</select><br/><br/>Expert: 
 	<input id='expertBox' type='text' name='expert'><br /><br />  
 	<select name='expert[]' id='expertSelect' size='10' multiple='multiple'>";
 
@@ -234,7 +234,7 @@ echo		 "<form action='submit_article.php";
 			echo 'Connection failed: ' . $ex->getMessage();
 		}
 		
-	echo "</select><br/>Tech:
+	echo "</select><br/><br/>Tech:
 	<input id='techBox' type='text' name='tech'><br /><br />  
 	<select name='tech[]' id='techSelect' size='10' multiple='multiple'>";
 
@@ -345,24 +345,16 @@ echo		 "<form action='submit_article.php";
 	#note New york times is the only current option for source
 
 
-
-	echo"</select><br/>Source: <select name='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' name='title' 
-	value='" . $curart['title'] . "'/>
-	<br/>Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/>
-	URL:<input type='text' name='url' size='100' value='" . $curart['url'] . 
-	"'/><br/>Text: <br/><textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . 
-	"</textarea><br/><input type='submit' value='Submit'>
-	</form>";
-
-
-	
+	echo "</select>
+	<br/><br/>Source: <select name='source'><option value='nyt'>New York Times</option></select><br/><br/>
+	Title:<input type='text' name='title' value='" . $curart['title'] . "'/><br/><br/>
+	Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/><br/>
+	URL:<input type='text' name='url' size='100' value='" . $curart['url'] . "'/><br/><br/>
+	Text:<br /> <textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . "</textarea><br/>
+	<input type='submit' value='Submit'></form>";
 	
 	$db = null;
 
-
-
-	
-	
 	mysql_close($con);
-	echo"</div></body></html>";
+	echo "</div></body></html>";
 ?>
