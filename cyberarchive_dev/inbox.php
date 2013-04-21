@@ -1,4 +1,8 @@
 <?php
+session_start();
+$_SESSION['status'] = (isset($_SESSION['status'])) ? $_SESSION['status'] : '';
+$_SESSION['last_update'] = (isset($_SESSION['last_update'])) ? $_SESSION['last_update'] : '';
+
 include 'util.php';
 include 'header.php';
 
@@ -18,29 +22,23 @@ $last_update = 20130320;
 
 if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
 
-// function fmt_date ($string){
-//   $temp = mysql_real_escape_string($string);
-//   echo $temp . "  1 <br />";
-//   $temp = str_replace('-','',$string);
-//   echo $temp . "  2 <br />";
-//   return $temp;
-// }
-
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
       $begin_date = str_replace('-','',mysql_real_escape_string($_POST['begin_date']));
       $end_date = str_replace('-','',mysql_real_escape_string($_POST['end_date']));
 
       $j = 1;
+      $facet = array(); 
 
   for($i = 0; $i < 10; $i++){
+
         $params = array(
             'api-key' => API_KEY,
             'query' => $search,
             'begin_date' => $begin_date,
             'end_date' => $end_date,
             'offset' => $i,
-            'fields' => 'date, byline, nytd_byline, title, nytd_title, url',
+            'fields' => 'date, byline, nytd_byline, title, nytd_title, url, per_facet, org_facet',
             );
 
         $ch = curl_init();
@@ -55,20 +53,25 @@ if (isset($_POST['search'])){
       $output = json_decode($inf, true);
 
       if(count($output['results']) > 0){
+
         foreach($output['results'] as $article ){
-          $author = (isset($article['byline'])) ? format_name($article['byline']) : '';
+
+          foreach($article as $field => $value){
+            if($field == 'byline') $author = format_name($article["$field"]);
+            if(is_array($value)) { 
+                $article["$field"] = implode(", ", $article["$field"]); 
+                $article["$field"] = ucwords(strtolower($article["$field"]));
+            }
+            $article["$field"] = htmlentities($article["$field"]); 
+        }
           mysql_insert_array($table, $article);
           mysql_query("UPDATE $table SET source='nyt', text='sample text', name='$author' WHERE temp_id= '$j'");
           $j++;
                     } }else {break;}
       unset($inf);
       unset($output);
+ 
       }}
-
-if (isset($_POST['clear'])){
-      mysql_query("TRUNCATE TABLE $table");
-      echo "<br><h2>table cleared</h2></br>";
-}
 
 function mysql_insert_array($table, $data, $exclude = array()) {
 
@@ -77,6 +80,7 @@ function mysql_insert_array($table, $data, $exclude = array()) {
     if( !is_array($exclude) ) $exclude = array($exclude);
 
     foreach( array_keys($data) as $key ) {
+
         if( !in_array($key, $exclude) ) {
             $fields[] = "$key";
             $values[] = "'" . mysql_real_escape_string($data[$key]) . "'";
@@ -97,6 +101,13 @@ function mysql_insert_array($table, $data, $exclude = array()) {
     }
 
 }
+
+if (isset($_POST['clear'])){
+        mysql_query("TRUNCATE TABLE $table");
+        header( 'Location: inbox.php' );
+        
+}
+
 
 // test code for a simple keyword search function
 echo  "<div id='container'>";
@@ -127,11 +138,10 @@ echo "<table border='1'>";
 
 $query = "SELECT * FROM $table";
 $result = mysql_query($query);
+$rows = mysql_num_rows($result);
 
-if($result){ 
-
-  $rows = mysql_num_rows($result);
-  echo "<h2> $rows results </h2>";
+if($rows > 0){ 
+  $_SESSION['status'] = 1;
   for ($j = 0; $j < $rows ; ++$j){
 
     $article = mysql_fetch_array($result);
@@ -140,17 +150,35 @@ if($result){
     foreach ($article as $field => $value){
       switch($field){
 
-          case "temp_id": echo '<td>' . $article['temp_id'] . '</td>'; break;
           case "date": echo '<td>' . date('Y-m-d',strtotime($article['date'])) . '</td>'; break;
+          case "title": {
+            echo "<td>";
+            if($article['nytd_title']) {echo $article['nytd_title'];}
+            else {echo $article['title'];}
+            echo "</td>"; 
+            break;}
           case "name": echo '<td>' . $article['name'] . '</td>'; break;
-          case "title": echo "<td>" . $article['title'] . "</td>"; break;
+          case "per_facet": echo '<td>' . $article['per_facet'] . '</td>'; break;
+          case "org_facet": echo '<td>' . $article['org_facet'] . '</td>'; break;
           case "url": echo "<td><a class='iframe' href='" . $article['url'] . "'>URL</a></td>"; break;
       }
 
     } 
     echo "<td><a href='new_article.php?&temp_id=" . $article['temp_id'] . "'>add</a></td>";
     echo "</tr>";
-    }} else {echo "<h1 style:'color:#0f0;'>no results</h1>";}
+    }} else { $_SESSION['status'] = 2; }
+
+  switch($_SESSION['status']){
+
+  case 1: echo "<h2 style = 'color:green'>". $rows . " results</h2>"; break;
+  case 2: echo "<h2 style = 'color:green'> no results </h2>"; break;
+  case 3: echo "<h2 style = 'color:green'> table cleared </h2>"; break;
+
+  }
+
+session_destroy();
+
+
 
 
 // if($result){ $rows = mysql_num_rows($result);
