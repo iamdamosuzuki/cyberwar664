@@ -73,6 +73,19 @@ include 'header.php';
 			echo 'Connection failed: ' . $ex->getMessage();
 			}
 	}
+
+	// if directed from the inbox
+
+		if(isset($_GET['temp_id'])){
+			echo 'chunks';
+			$sql ="SELECT * FROM `Inbox` WHERE `temp_id`=" . $_GET['temp_id'];
+			$result = $db->prepare($sql);
+			$result->execute();
+			$curart = $result->fetch(PDO::FETCH_ASSOC);
+			
+
+		}
+
 //Provides "return to main page" option	
 	echo "<a href='index.php'>Return to main page</a>";
 
@@ -154,7 +167,7 @@ echo		 "<form action='submit_article.php";
 	}
 	
 	echo "' method='post'> Author: 
-	<input id='authorBox' type='text' name='author'><br /><br />  
+	<input id='authorBox' type='text' name='author' value='" . $curart['name'] . "'><br /><br />  
 	<select name='author[]' id='authorSelect' size='10' multiple='multiple'>";
 
 	try{
@@ -330,7 +343,8 @@ echo		 "<form action='submit_article.php";
 
 	
 	#note New york times is the only current option for source
-	
+
+
 
 	echo"</select><br/>Source: <select name='source'><option value='nyt'>New York Times</option></select><br/>Title:<input type='text' name='title' 
 	value='" . $curart['title'] . "'/>
@@ -340,6 +354,8 @@ echo		 "<form action='submit_article.php";
 	"</textarea><br/><input type='submit' value='Submit'>
 	</form>";
 
+
+	
 	
 	$db = null;
 

@@ -18,15 +18,27 @@ $last_update = 20130320;
 
 if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
 
+// function fmt_date ($string){
+//   $temp = mysql_real_escape_string($string);
+//   echo $temp . "  1 <br />";
+//   $temp = str_replace('-','',$string);
+//   echo $temp . "  2 <br />";
+//   return $temp;
+// }
+
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
+      $begin_date = str_replace('-','',mysql_real_escape_string($_POST['begin_date']));
+      $end_date = str_replace('-','',mysql_real_escape_string($_POST['end_date']));
+
+      $j = 1;
 
   for($i = 0; $i < 10; $i++){
         $params = array(
             'api-key' => API_KEY,
             'query' => $search,
-            'begin_date' => $last_update,
-            'end_date' => $today,
+            'begin_date' => $begin_date,
+            'end_date' => $end_date,
             'offset' => $i,
             'fields' => 'date, byline, nytd_byline, title, nytd_title, url',
             );
@@ -41,19 +53,17 @@ if (isset($_POST['search'])){
         curl_close($ch);
 
       $output = json_decode($inf, true);
-      $default_fields = array(
-          'source' => 'nyt',
-          'text' => 'chunks',
-        );
 
-      $j = 1;
-      foreach($output['results'] as $article ){
-        mysql_insert_array($table, $article);
-        mysql_query("UPDATE $table SET source='nyt', text='chunks' WHERE temp_id= '$j'");
-        $j++;
-      }
+      if(count($output['results']) > 0){
+        foreach($output['results'] as $article ){
+          $author = (isset($article['byline'])) ? format_name($article['byline']) : '';
+          mysql_insert_array($table, $article);
+          mysql_query("UPDATE $table SET source='nyt', text='sample text', name='$author' WHERE temp_id= '$j'");
+          $j++;
+                    } }else {break;}
       unset($inf);
-      unset($output);}}
+      unset($output);
+      }}
 
 if (isset($_POST['clear'])){
       mysql_query("TRUNCATE TABLE $table");
@@ -111,42 +121,68 @@ echo <<< _FORM2
 <br /><br />
 _FORM2;
 
-
+// if(isset($no_results) && !$no_results) echo "<h1 style:'color: #f00'>no results</h1>";
 // builds the table based on the database data
 echo "<table border='1'>";
 
 $query = "SELECT * FROM $table";
 $result = mysql_query($query);
-if($result){ $rows = mysql_num_rows($result);
 
+if($result){ 
+
+  $rows = mysql_num_rows($result);
+  echo "<h2> $rows results </h2>";
   for ($j = 0; $j < $rows ; ++$j){
 
-      $row = mysql_fetch_row($result);
-      echo "<tr>";
-      for ($k = 0; $k < count($row); ++$k){
-        switch($k){
-          case 0: echo "<td>$row[$k]</td>"; break;
-          case 1: echo '<td>' . date('Y-m-d',strtotime($row[$k])) . '</td>'; break;
-          case 2: echo '<td>' . format_name($row[$k]) . '</td>'; break;
-          case 3: echo "<td>$row[$k]</td>"; break;
-          case 4: break;
-          case 5: echo "<td>$row[$k]</td>"; break;
-          case 6: echo "<td>$row[$k]</td>"; break;
-          case 7: echo "<td>$row[$k]</td>"; break;
-          case 8: echo "<td><a class='iframe' href='$row[$k]'>URL</a></td>"; $url[] = $row[$k]; break;
-        }
+    $article = mysql_fetch_array($result);
+    echo "<tr>";
+
+    foreach ($article as $field => $value){
+      switch($field){
+
+          case "temp_id": echo '<td>' . $article['temp_id'] . '</td>'; break;
+          case "date": echo '<td>' . date('Y-m-d',strtotime($article['date'])) . '</td>'; break;
+          case "name": echo '<td>' . $article['name'] . '</td>'; break;
+          case "title": echo "<td>" . $article['title'] . "</td>"; break;
+          case "url": echo "<td><a class='iframe' href='" . $article['url'] . "'>URL</a></td>"; break;
       }
-      echo "<td><form method='post'>
-            <input type='submit' name='add' value='add'>
-            <input type='hidden' name='temp_id' value='$row[0]'>
-            <input type='hidden' name='date' value='$row[1]'>
-            <input type='hidden' name='name' value='$row[2]'>
-            <input type='hidden' name='title' value='$row[3]'>
-            <input type='hidden' name='url' value='$row[4]'>
-            </form></td>";
-      echo "<td><a href='new_article.php?&temp_id=$row[0]'>add</a></td>";
-      }
-    }
+
+    } 
+    echo "<td><a href='new_article.php?&temp_id=" . $article['temp_id'] . "'>add</a></td>";
+    echo "</tr>";
+    }} else {echo "<h1 style:'color:#0f0;'>no results</h1>";}
+
+
+// if($result){ $rows = mysql_num_rows($result);
+
+//   for ($j = 0; $j < $rows ; ++$j){
+
+//       $row = mysql_fetch_row($result);
+//       echo "<tr>";
+//       for ($k = 0; $k < count($row); ++$k){
+//         switch($k){
+//           case 0: echo "<td>$row[$k]</td>"; break;
+//           case 1: echo '<td>' . date('Y-m-d',strtotime($row[$k])) . '</td>'; break;
+//           case 2: echo '<td>' . format_name($row[$k]) . '</td>'; break;
+//           case 3: echo "<td>$row[$k]</td>"; break;
+//           case 4: break;
+//           case 5: echo "<td>$row[$k]</td>"; break;
+//           case 6: echo "<td>$row[$k]</td>"; break;
+//           case 7: echo "<td>$row[$k]</td>"; break;
+//           case 8: echo "<td><a class='iframe' href='$row[$k]'>URL</a></td>"; $url[] = $row[$k]; break;
+//         }
+//       }
+//       echo "<td><form method='post'>
+//             <input type='submit' name='add' value='add'>
+//             <input type='hidden' name='temp_id' value='$row[0]'>
+//             <input type='hidden' name='date' value='$row[1]'>
+//             <input type='hidden' name='name' value='$row[2]'>
+//             <input type='hidden' name='title' value='$row[3]'>
+//             <input type='hidden' name='url' value='$row[4]'>
+//             </form></td>";
+//       echo "<td><a href='new_article.php?&temp_id=$row[0]'>add</a></td>";
+//       }
+//     }
 
 
 function format_name($name) {
@@ -161,14 +197,14 @@ function format_name($name) {
 
   if($names){
   switch(count($names)){
-      case 0: return ''; break;
+      case 0: return 'No Author'; break;
       case 1: return $names[0]; break;
       case 2: return $names[1] . ', ' . $names[0]; break;
       case 3: return $names[2] . ', ' . $names[0] . ' ' . $names[1]; break;
       case 4: return $names[1] . ', ' . $names[0]; break;
       case 5: return $names[1] . ', ' . $names[0]; break;
       case 6: return $names[1] . ', ' . $names[0]; break;
-    }}else{return 'chunks';}
+    }}
 
   // return implode(' ', $names);
 }

@@ -4,68 +4,18 @@
 <html lang="en">
 <head>
 <title>SI664 Cyberwarfare Database</title>
-<link rel="stylesheet" type='text/css' href="lib/colorbox.css" />
-<link rel="stylesheet" type='text/css' href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <link rel='stylesheet' type='text/css' media='all' href='static/cyberarchive_back.css'/>
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<script src="lib/jquery.colorbox.js"></script>
-<script type="text/javascript" src="d3/d3.v3.min.js"></script>
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
+<script src="d3/d3.v3.min.js"></script>
 <script type='text/javascript' src='static/moveFunction2.js'></script>
 <script type='text/javascript' src='static/confirmDel.js'></script>
 <script type='text/javascript' src='static/confirmClean.js'></script>
      
-     // jquery code for tablesorter function called in view_articles.php
+<!-- jquery code for tablesorter function called in view_articles.php -->
 <script type='text/javascript' src='static/jquery.tablesorter/jquery-latest.js'></script>
 <script type='text/javascript' src='static/jquery.tablesorter/jquery.tablesorter.js'></script>
 <script type='text/javascript' src='static/sortTable.js'></script>
-
-<style type="text/css">
-    svg{
-        float: right;
-        left-margin: 25%;
-    }
-
-    svg.network{float:left;}
-    div.bar {
-        display: inline-block;
-        width: 20px;
-        height: 75px;
-        background-color: teal;
-        margin-right: 2px;
-    }
-    
-    #button {
-        position: absolute;
-        top: 10px;
-        left: 400px;
-    }
-    
-    .btn-mini {
-        padding: 2px 6px;
-        font-size: 11px;
-        line-height: 14px;
-    }
-    .node {
-      stroke: #fff;
-      stroke-width: 1.5px;
-    }
-
-    .link {
-      stroke: #999;
-      stroke-opacity: .6;
-    }
-
-    .node text {
-      pointer-events: none;
-      font: 10px sans-serif;
-      fill: #000;
-      stroke: none;
-    }
-    
-
-</style>        
+ 
 <script>
     jQuery.fn.filterByText = function(textbox, selectSingleMatch) {
         return this.each(function() {
@@ -117,6 +67,8 @@
 
 </script>
 
+<link rel="stylesheet" type='text/css' href="lib/colorbox.css" />
+<script src="lib/jquery.colorbox.js"></script>
 <script>
   $(document).ready(function(){
     //Examples of how to assign the Colorbox event to elements
@@ -151,4 +103,4 @@
 </head>
 <body>
 
-<div id='header'><h1>THE CYBERARCHIVE</h1><a href='index.php'><img src='static/sad_mac.png' /></a></div>
+<div id='header'><h1>THE CYBERWAR DIGITAL ARCHIVE</h1><a href='index.php'><img src='static/sad_mac.png' /></a></div>
