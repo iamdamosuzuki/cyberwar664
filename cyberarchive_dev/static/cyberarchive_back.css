@@ -2,7 +2,7 @@
 
 /* below are general settings for entire backend*/
 body{
-    font-family: helvetica, arial, sans-serif;
+    font-family: "helvetica-neue", helvetica, arial, sans-serif;
     color: #29293D;
     font-weight: lighter;
     letter-spacing: .08em;
@@ -38,33 +38,51 @@ h1{
     height: 120px;
     padding: 0;
     margin: -21px 0 0 0;
-    background: rgb(57,70,17); /* Old browsers */
-    background: -moz-linear-gradient(left, rgba(57,70,17,1) 0%, rgba(57,70,17,1) 48%, rgba(56,114,63,1) 48%, rgba(56,114,63,1) 72%, rgba(95,156,102,1) 72%, rgba(95,156,102,1) 91%, rgba(149,202,155,1) 91%, rgba(149,202,155,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(57,70,17,1)), color-stop(48%,rgba(57,70,17,1)), color-stop(48%,rgba(56,114,63,1)), color-stop(72%,rgba(56,114,63,1)), color-stop(72%,rgba(95,156,102,1)), color-stop(91%,rgba(95,156,102,1)), color-stop(91%,rgba(149,202,155,1)), color-stop(100%,rgba(149,202,155,1))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%); /* IE10+ */
-    background: linear-gradient(to right, rgba(57,70,17,1) 0%,rgba(57,70,17,1) 48%,rgba(56,114,63,1) 48%,rgba(56,114,63,1) 72%,rgba(95,156,102,1) 72%,rgba(95,156,102,1) 91%,rgba(149,202,155,1) 91%,rgba(149,202,155,1) 100%);
+background: rgb(0,38,28); /* Old browsers */
+background: -moz-linear-gradient(left,  rgba(0,38,28,1) 0%, rgba(0,38,28,1) 90%, rgba(4,76,41,1) 90%, rgba(4,76,41,1) 93%, rgba(22,127,57,1) 93%, rgba(22,127,57,1) 96%, rgba(69,191,85,1) 96%, rgba(69,191,85,1) 98%, rgba(150,237,137,1) 98%, rgba(150,237,137,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,38,28,1)), color-stop(90%,rgba(0,38,28,1)), color-stop(90%,rgba(4,76,41,1)), color-stop(93%,rgba(4,76,41,1)), color-stop(93%,rgba(22,127,57,1)), color-stop(96%,rgba(22,127,57,1)), color-stop(96%,rgba(69,191,85,1)), color-stop(98%,rgba(69,191,85,1)), color-stop(98%,rgba(150,237,137,1)), color-stop(100%,rgba(150,237,137,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  rgba(0,38,28,1) 0%,rgba(0,38,28,1) 90%,rgba(4,76,41,1) 90%,rgba(4,76,41,1) 93%,rgba(22,127,57,1) 93%,rgba(22,127,57,1) 96%,rgba(69,191,85,1) 96%,rgba(69,191,85,1) 98%,rgba(150,237,137,1) 98%,rgba(150,237,137,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  rgba(0,38,28,1) 0%,rgba(0,38,28,1) 90%,rgba(4,76,41,1) 90%,rgba(4,76,41,1) 93%,rgba(22,127,57,1) 93%,rgba(22,127,57,1) 96%,rgba(69,191,85,1) 96%,rgba(69,191,85,1) 98%,rgba(150,237,137,1) 98%,rgba(150,237,137,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  rgba(0,38,28,1) 0%,rgba(0,38,28,1) 90%,rgba(4,76,41,1) 90%,rgba(4,76,41,1) 93%,rgba(22,127,57,1) 93%,rgba(22,127,57,1) 96%,rgba(69,191,85,1) 96%,rgba(69,191,85,1) 98%,rgba(150,237,137,1) 98%,rgba(150,237,137,1) 100%); /* IE10+ */
+background: linear-gradient(to right,  rgba(0,38,28,1) 0%,rgba(0,38,28,1) 90%,rgba(4,76,41,1) 90%,rgba(4,76,41,1) 93%,rgba(22,127,57,1) 93%,rgba(22,127,57,1) 96%,rgba(69,191,85,1) 96%,rgba(69,191,85,1) 98%,rgba(150,237,137,1) 98%,rgba(150,237,137,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00261c', endColorstr='#96ed89',GradientType=1 ); /* IE6-9 */
+
 }
 
 #header h1 {
     width: 50%;
-    padding: 50px 0 0 20px;
+    padding: 35px 0 0 20px;
 }
 
-#header img{
-    height: 90px;
-    display: inline;
-    
-    float: right;
-    margin: -100px 0 0 0;
-    padding: 0 25px 0 0;
+
+#header ul {
+    width: 100%;
+    margin: -15px 0 0 -20px;
+    padding 0 0 0 0;
+    list-style: none;
+}
+
+#header ul li{
+    color: #009300;
+    float: left;
+    padding-right: 10px;
+}
+
+#header ul li a, #header ul li a:link, #header ul li a:hover{
+    text-decoration: none;
 }
 
 #container{
     margin: 120px 0 0 20px;
     padding: 0 0 0 0;
     
+}
+
+#icon img{
+    height: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 0 0 0;
 }
 
 table {
@@ -161,5 +179,3 @@ div.bar {
   fill: #000;
   stroke: none;
 }
-
-
