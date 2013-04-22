@@ -55,6 +55,7 @@ h1{
 #header img{
     height: 90px;
     display: inline;
+    
     float: right;
     margin: -100px 0 0 0;
     padding: 0 25px 0 0;
