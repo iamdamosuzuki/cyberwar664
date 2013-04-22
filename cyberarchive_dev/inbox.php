@@ -1,26 +1,30 @@
 <?php
-session_start();
-$_SESSION['status'] = (isset($_SESSION['status'])) ? $_SESSION['status'] : '';
-$_SESSION['last_update'] = (isset($_SESSION['last_update'])) ? $_SESSION['last_update'] : '';
+
 
 include 'util.php';
 include 'header.php';
 
-//NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
-
-// API key from NYT dev account
 define('API_KEY', '4f7c037903eb76bfe8cf733b608c4478:11:49914020');
 define('API_URL', 'http://api.nytimes.com/svc/search/v1/article?');
 $table = 'Inbox';
 $today = date('Ymd',time());
+
+$_SESSION['status'] = (isset($_SESSION['status'])) ? $_SESSION['status'] : '';
+
+if(!isset($_SESSION['last_update'])) {
+
+    $query = "SELECT date FROM Options WHERE id = 1";
+    $result = mysql_query($query);
+    $last_update = mysql_fetch_array($result)['date'];
+    $_SESSION['last_update'] = $last_update;
+
+    if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
+}
+
+//NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
+
+// API key from NYT dev account
 // echo $last_update;
-
-$query = "SELECT date FROM Options WHERE id = 1";
-$result = mysql_query($query);
-$last_update = mysql_fetch_array($result)['date'];
-$last_update = 20130320;
-
-if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
 
 if (isset($_POST['search'])){
       $search = mysql_real_escape_string($_POST['search']);
@@ -30,7 +34,7 @@ if (isset($_POST['search'])){
       $j = 1;
       $facet = array(); 
 
-  for($i = 0; $i < 10; $i++){
+  for($i = 0; $i < 50; $i++){
 
         $params = array(
             'api-key' => API_KEY,
@@ -57,7 +61,7 @@ if (isset($_POST['search'])){
         foreach($output['results'] as $article ){
 
           foreach($article as $field => $value){
-            if($field == 'byline') $author = format_name($article["$field"]);
+            if($field == 'byline') $author = (strlen($article['byline']) > 0) ? format_name($article['byline']) : 0;
             if(is_array($value)) { 
                 $article["$field"] = implode(", ", $article["$field"]); 
                 $article["$field"] = ucwords(strtolower($article["$field"]));
@@ -104,8 +108,6 @@ function mysql_insert_array($table, $data, $exclude = array()) {
 
 if (isset($_POST['clear'])){
         mysql_query("TRUNCATE TABLE $table");
-        header( 'Location: inbox.php' );
-        
 }
 
 
@@ -132,7 +134,7 @@ echo <<< _FORM2
 <br /><br />
 _FORM2;
 
-// if(isset($no_results) && !$no_results) echo "<h1 style:'color: #f00'>no results</h1>";
+
 // builds the table based on the database data
 echo "<table border='1'>";
 
@@ -147,9 +149,11 @@ if($rows > 0){
     $article = mysql_fetch_array($result);
     echo "<tr>";
 
-    foreach ($article as $field => $value){
-      switch($field){
+    foreach ($article as $key => $value){
 
+      switch($key){
+          case '0': break;
+          case "temp_id": echo '<td>' . $article['temp_id'] . '</td>'; break;
           case "date": echo '<td>' . date('Y-m-d',strtotime($article['date'])) . '</td>'; break;
           case "title": {
             echo "<td>";
@@ -177,41 +181,6 @@ if($rows > 0){
   }
 
 session_destroy();
-
-
-
-
-// if($result){ $rows = mysql_num_rows($result);
-
-//   for ($j = 0; $j < $rows ; ++$j){
-
-//       $row = mysql_fetch_row($result);
-//       echo "<tr>";
-//       for ($k = 0; $k < count($row); ++$k){
-//         switch($k){
-//           case 0: echo "<td>$row[$k]</td>"; break;
-//           case 1: echo '<td>' . date('Y-m-d',strtotime($row[$k])) . '</td>'; break;
-//           case 2: echo '<td>' . format_name($row[$k]) . '</td>'; break;
-//           case 3: echo "<td>$row[$k]</td>"; break;
-//           case 4: break;
-//           case 5: echo "<td>$row[$k]</td>"; break;
-//           case 6: echo "<td>$row[$k]</td>"; break;
-//           case 7: echo "<td>$row[$k]</td>"; break;
-//           case 8: echo "<td><a class='iframe' href='$row[$k]'>URL</a></td>"; $url[] = $row[$k]; break;
-//         }
-//       }
-//       echo "<td><form method='post'>
-//             <input type='submit' name='add' value='add'>
-//             <input type='hidden' name='temp_id' value='$row[0]'>
-//             <input type='hidden' name='date' value='$row[1]'>
-//             <input type='hidden' name='name' value='$row[2]'>
-//             <input type='hidden' name='title' value='$row[3]'>
-//             <input type='hidden' name='url' value='$row[4]'>
-//             </form></td>";
-//       echo "<td><a href='new_article.php?&temp_id=$row[0]'>add</a></td>";
-//       }
-//     }
-
 
 function format_name($name) {
   

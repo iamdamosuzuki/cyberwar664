@@ -1,4 +1,7 @@
-<?php ?>
+<?php 
+session_start();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +106,7 @@
 </head>
 <body>
 
-<div id='header'><h1>THE CYBERWAR DIGITAL ARCHIVE</h1>
+<div id='header'><h1><a href='index.php'>THE CYBERWAR DIGITAL ARCHIVE</a></h1>
 <ul>
 <li><a href='new_article.php'>New Article</a><br/>
 <li><a href='view_articles.php'>Articles</a></li>
@@ -113,4 +116,5 @@
 <li><a href='authority.php?table=attack_list'>Attacks</a></li>
 <li><a href='authority.php?table=actor_list'>Actors</a></li>
 </ul>
+<a href='index.php'><img src='static/sad_mac.png' /></a>
 </div>

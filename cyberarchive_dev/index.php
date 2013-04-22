@@ -17,6 +17,5 @@ include 'barchart.php';
 <a href='inbox.php'>Inbox</a><br/>
 </div>
 
-<a id='icon' href='index.php'><img src='static/sad_mac.png' /></a>
 </body>
 </html>
