@@ -103,4 +103,14 @@
 </head>
 <body>
 
-<div id='header'><h1>THE CYBERWAR DIGITAL ARCHIVE</h1><a href='index.php'><img src='static/sad_mac.png' /></a></div>
+<div id='header'><h1>THE CYBERWAR DIGITAL ARCHIVE</h1>
+<ul>
+<li><a href='new_article.php'>New Article</a><br/>
+<li><a href='view_articles.php'>Articles</a></li>
+<li><a href='authority.php?table=author_list'>Authors</a></li>
+<li><a href='authority.php?table=tech_list'>Techs</a></li>
+<li><a href='authority.php?table=expert_list'>Experts</a></li>
+<li><a href='authority.php?table=attack_list'>Attacks</a></li>
+<li><a href='authority.php?table=actor_list'>Actors</a></li>
+</ul>
+</div>
