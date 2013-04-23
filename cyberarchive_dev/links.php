@@ -168,25 +168,17 @@ for($i = 0; $i < count($data['nodes']); $i++){
     $experts = [];
 
     if ($data['nodes'][$i]['group'] == 0){
-//      print_r($data['nodes'][$i]['id']);        //debugging for printing
-//      echo "\n";
         $sourceID = $data['nodes'][$i]['id'];
-//        echo "sourceID: " . $sourceID . "<br />";
         $q1 = "SELECT " . $sourceTable . "." . $sourceRow . ", " . $targetTable . "." . $targetRow . " FROM " . $sourceTable . " JOIN articles JOIN " . $targetTable . " ON " . $sourceTable . ".article = articles.id AND " . $targetTable . ".article = articles.id WHERE " . $sourceTable . "." . $sourceRow . " = '$sourceID'";
-//        $q1 = "SELECT authors.author, experts.expert FROM authors JOIN articles JOIN experts ON authors.article = articles.id AND experts.article = articles.id WHERE authors.author = '$sourceID'";
-//        echo "<br />" . $q1 . "<br />";
         $rs1 = mysql_query($q1);
-
         try{
             $queryTarget ="SELECT name,id FROM " . $targetList;
             $result = $db->prepare($q1);
             $result->execute();
-            //$rs1 = $result->fetch(PDO::FETCH_ASSOC);
             foreach ($db->query($q1) as $row){
                 for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes
                     if ($data["nodes"][$l]["group"] == 2){
                         if ($data["nodes"][$l]["id"] == $row[$targetRow]){
-                 //                    echo "links: [{source: " . $sourceID . ", target: " . $l . ", value: " . 1 . ", expertID: " . $row[$targetRow] . ", authorID: " . $row[$sourceRow] . "}]} <br />";
                             $data['links'][$linksCounter]['source'] = $i;
                             $data['links'][$linksCounter]['target'] = $l;
                             $data['links'][$linksCounter]['value'] = 1;
