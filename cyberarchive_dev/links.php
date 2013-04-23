@@ -82,7 +82,7 @@ try{
 	$querySource ="SELECT name,id FROM " . $sourceList;
 	$result = $db->prepare($querySource);
 	$result->execute();
-	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
+//	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
     foreach ($db->query($querySource) as $row){
         $row['id'] = (int)$row['id'];
         $row['group'] = 0;
@@ -98,7 +98,7 @@ try{
 	$queryTarget ="SELECT name,id FROM " . $targetList;
 	$result = $db->prepare($queryTarget);
 	$result->execute();
-	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
+    $resultSource = $result->fetch(PDO::FETCH_ASSOC);
     foreach ($db->query($queryTarget) as $row){
         $row['id'] = (int)$row['id'];
         $row['group'] = 2;
@@ -170,15 +170,14 @@ for($i = 0; $i < count($data['nodes']); $i++){
     if ($data['nodes'][$i]['group'] == 0){
         $sourceID = $data['nodes'][$i]['id'];
         $q1 = "SELECT " . $sourceTable . "." . $sourceRow . ", " . $targetTable . "." . $targetRow . " FROM " . $sourceTable . " JOIN articles JOIN " . $targetTable . " ON " . $sourceTable . ".article = articles.id AND " . $targetTable . ".article = articles.id WHERE " . $sourceTable . "." . $sourceRow . " = '$sourceID'";
-        $rs1 = mysql_query($q1);
         try{
             $queryTarget ="SELECT name,id FROM " . $targetList;
             $result = $db->prepare($q1);
             $result->execute();
             foreach ($db->query($q1) as $row){
-                for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes
-                    if ($data["nodes"][$l]["group"] == 2){
-                        if ($data["nodes"][$l]["id"] == $row[$targetRow]){
+                for ($l = 0; $l < count($data["nodes"]); $l++){             //iterates through nodes
+                    if ($data["nodes"][$l]["group"] == 2){                  //if it's group two (which is the target group)
+                        if ($data["nodes"][$l]["id"] == $row[$targetRow]){  //if the id's match
                             $data['links'][$linksCounter]['source'] = $i;
                             $data['links'][$linksCounter]['target'] = $l;
                             $data['links'][$linksCounter]['value'] = 1;
