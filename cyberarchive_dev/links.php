@@ -1,15 +1,24 @@
 <?php
 
+include 'util.php';
+
+
 $db_hostname = 'localhost';
 $db_database = 'cyberwar_test';
 $db_username = 'cyberwar';
 $db_password = 'cyberwar';
 
-$db = mysql_connect($db_hostname,$db_username, $db_password)
-   or die("Here's why we can't connect to the database: " . mysql_error());
+// set up database connection
 
-mysql_select_db($db_database)
-    or die("Here's why we can't select the database: " . mysql_error());
+try{
+    $db = new PDO($dsn, $user, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }	catch(PDOException $ex) {
+    echo 'Connection failed: ' . $ex->getMessage();
+}
+
+//use the get request to set the dropdown menu selections
+//the default state is Authors and Experts
     
 if ($_GET['sourceTable'] == ''){
     $sourceTable = 'authors';
@@ -25,11 +34,7 @@ else{
     $targetTable = $_GET['targetTable'] ;
 }
 
-//echo $sourceTable . "<br />";
-//echo $targetTable . "<br />";
-
-//$sourceTable = "authors";
-//$targetTable = "tech";
+//Creates variables that form the MySQL queries depending on what is selected in the dropdown menu
 
 switch($sourceTable)
 {
@@ -71,29 +76,47 @@ switch($targetTable)
     break;
 }
 
-$querySource = "SELECT name,id FROM " . $sourceList;
-$resultSource = mysql_query($querySource);
+//The following two queries create the $nodes[] array, which D3 uses to create the nodes
 
-while ($row = mysql_fetch_array($resultSource, MYSQL_ASSOC)){
-	$row['id'] = (int)$row['id'];
-	$row['group'] = 0;
-	$nodes[]= $row;
+try{
+	$querySource ="SELECT name,id FROM " . $sourceList;
+	$result = $db->prepare($querySource);
+	$result->execute();
+	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
+    foreach ($db->query($querySource) as $row){
+        $row['id'] = (int)$row['id'];
+        $row['group'] = 0;
+        $nodes[]= $row;;
+        }
+	} catch(PDOException $ex) {
+	echo 'Connection failed: ' . $ex->getMessage();
+	}
 
-}
 
-$queryTarget = "SELECT name,id FROM " . $targetList;
-$resultTarget = mysql_query($queryTarget);
+try{
+	$queryTarget ="SELECT name,id FROM " . $targetList;
+	$result = $db->prepare($queryTarget);
+	$result->execute();
+	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
+    foreach ($db->query($queryTarget) as $row){
+        $row['id'] = (int)$row['id'];
+        $row['group'] = 2;
+        $nodes[]= $row;;
+        }
+	} catch(PDOException $ex) {
+	echo 'Connection failed: ' . $ex->getMessage();
+	}
 
-while ($row = mysql_fetch_array($resultTarget, MYSQL_ASSOC)){
-	$row['id'] = (int)$row['id'];
-	$row['group'] = 2;
-	$nodes[]= $row;
-}
+//Creates the $data[] array which will be turned into JSON
+//This array has an object called nodes and an object called links
 
 $data["nodes"] = $nodes;
 $data["links"] = array();
 
 $linksCounter = 0;
+
+//Creates variables that form the MySQL queries depending on what is selected in the dropdown menu
+
 
 switch($sourceTable)
 {
@@ -136,6 +159,9 @@ switch($targetTable)
 }
 
 
+//The following iterative block creates the links data
+
+
 for($i = 0; $i < count($data['nodes']); $i++){
     unset($experts);
     $experts = [];
@@ -149,6 +175,21 @@ for($i = 0; $i < count($data['nodes']); $i++){
 //        $q1 = "SELECT authors.author, experts.expert FROM authors JOIN articles JOIN experts ON authors.article = articles.id AND experts.article = articles.id WHERE authors.author = '$sourceID'";
 //        echo "<br />" . $q1 . "<br />";
         $rs1 = mysql_query($q1);
+
+/*        try{
+            $queryTarget ="SELECT name,id FROM " . $targetList;
+            $result = $db->prepare($q1);
+            $result->execute();
+            $rs1 = $result->fetch(PDO::FETCH_ASSOC);
+            foreach ($db->query($q1) as $row){
+                $row['id'] = (int)$row['id'];
+                $row['group'] = 2;
+                $nodes[]= $row;;
+                }
+            } catch(PDOException $ex) {
+            echo 'Connection failed: ' . $ex->getMessage();
+            }
+*/	
         while ($row = mysql_fetch_array($rs1, MYSQL_ASSOC)) {
 //            echo "Author: " . $row["author"] . " Expert: " . $row["expert"] . "<br />";
             for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes

@@ -3,6 +3,10 @@
 include 'util.php';
 include 'header.php';
 
+//This first chunk of code uses the POST data to set the selection 
+//of the dropdown menus
+
+
 if (isset($_POST['sourceTable'])){
     $sourceTable = $_POST['sourceTable'];
 }
@@ -57,6 +61,8 @@ switch($targetTable)
         break;
     break;
 }
+
+//The following script creates the Force Diagram network visualization links.php as the data source 
 
 echo <<<_END
 <script>
