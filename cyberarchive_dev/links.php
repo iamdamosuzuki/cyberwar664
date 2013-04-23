@@ -93,6 +93,7 @@ try{
 	}
 
 
+
 try{
 	$queryTarget ="SELECT name,id FROM " . $targetList;
 	$result = $db->prepare($queryTarget);
@@ -176,35 +177,28 @@ for($i = 0; $i < count($data['nodes']); $i++){
 //        echo "<br />" . $q1 . "<br />";
         $rs1 = mysql_query($q1);
 
-/*        try{
+        try{
             $queryTarget ="SELECT name,id FROM " . $targetList;
             $result = $db->prepare($q1);
             $result->execute();
-            $rs1 = $result->fetch(PDO::FETCH_ASSOC);
+            //$rs1 = $result->fetch(PDO::FETCH_ASSOC);
             foreach ($db->query($q1) as $row){
-                $row['id'] = (int)$row['id'];
-                $row['group'] = 2;
-                $nodes[]= $row;;
-                }
-            } catch(PDOException $ex) {
-            echo 'Connection failed: ' . $ex->getMessage();
-            }
-*/	
-        while ($row = mysql_fetch_array($rs1, MYSQL_ASSOC)) {
-//            echo "Author: " . $row["author"] . " Expert: " . $row["expert"] . "<br />";
-            for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes
-                if ($data["nodes"][$l]["group"] == 2){
-                    if ($data["nodes"][$l]["id"] == $row[$targetRow]){
- //                       echo "links: [{source: " . $sourceID . ", target: " . $l . ", value: " . 1 . ", expertID: " . $row[$targetRow] . ", authorID: " . $row[$sourceRow] . "}]} <br />";
-                        $data['links'][$linksCounter]['source'] = $i;
-                        $data['links'][$linksCounter]['target'] = $l;
-                        $data['links'][$linksCounter]['value'] = 1;
-                        $data['links'][$linksCounter]['expertID'] = $row[$targetRow];
-                        $data['links'][$linksCounter]['authorID'] = $row[$sourceRow];
-                        $linksCounter++;
+                for ($l = 0; $l < count($data["nodes"]); $l++){         //iterates through nodes
+                    if ($data["nodes"][$l]["group"] == 2){
+                        if ($data["nodes"][$l]["id"] == $row[$targetRow]){
+                 //                    echo "links: [{source: " . $sourceID . ", target: " . $l . ", value: " . 1 . ", expertID: " . $row[$targetRow] . ", authorID: " . $row[$sourceRow] . "}]} <br />";
+                            $data['links'][$linksCounter]['source'] = $i;
+                            $data['links'][$linksCounter]['target'] = $l;
+                            $data['links'][$linksCounter]['value'] = 1;
+                            $data['links'][$linksCounter]['expertID'] = $row[$targetRow];
+                            $data['links'][$linksCounter]['authorID'] = $row[$sourceRow];
+                            $linksCounter++;
+                        }
                     }
                 }
             }
+        } catch(PDOException $ex) {
+        echo 'Connection failed: ' . $ex->getMessage();
         }
     }
 }
