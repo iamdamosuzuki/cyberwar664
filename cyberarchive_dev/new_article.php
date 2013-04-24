@@ -255,9 +255,16 @@ echo		 "<form action='submit_article.php";
 	Title:<input type='text' name='title' value='" . $curart['title'] . "'/><br/><br/>
 	Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/><br/>
 	URL:<input type='text' name='url' size='100' value='" . $curart['url'] . "'/><br/><br/>
-	Text:<br /> <textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . "</textarea><br/>
+	Text:<br /> <textarea style='width:500px;height:200px;' name='text'>" . get_nyt_text($curart['url']) . "</textarea><br/>
 	<input type='submit' value='Submit'></form>";
 	
+	function get_nyt_text($url) {
+		$html = file_get_contents($url);
+		$html = explode('<p itemprop="articleBody">', $html);
+		for($i = 1; $i < count($html) - 1; $i++) $text .= strip_tags($html[$i]);
+		return $text;
+	}
+
 	$db = null;
 
 	mysql_close($con);
