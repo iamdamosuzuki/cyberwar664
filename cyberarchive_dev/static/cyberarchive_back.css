@@ -36,7 +36,7 @@ h1{
 }
 
 #header {
-/*    visibility: hidden; */    
+    visibility: hidden;     
     position: fixed;
     left: 0;
     right: 0;

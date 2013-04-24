@@ -1,5 +1,6 @@
-<?php
+<?php //NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
 
+// API key from NYT dev account
 
 include 'util.php';
 include 'header.php';
@@ -11,31 +12,34 @@ $today = date('Ymd',time());
 
 $_SESSION['status'] = (isset($_SESSION['status'])) ? $_SESSION['status'] : '';
 
+// sets the $last_update variable in the Options table
+
 if(!isset($_SESSION['last_update'])) {
 
-    $query = "SELECT date FROM Options WHERE id = 1";
-    $result = mysql_query($query);
-    $last_update = mysql_fetch_array($result)['date'];
-    $_SESSION['last_update'] = $last_update;
+    $sql = "SELECT date FROM Options WHERE id = 1";
+    $result = $db->query($sql);
+    $result = $result->fetch(PDO::FETCH_ASSOC);
+    $last_update = $result['date'];
 
-    if ($today != $last_update) mysql_query("UPDATE Options SET date = $today WHERE id = 1");
+    if ($today != $last_update) $db->query("UPDATE Options SET date = $today WHERE id = 1");
 }
 
-//NYT API inbox - collects potentially relevant articles from between last login until the current date in a temporary database.
-
-// API key from NYT dev account
-// echo $last_update;
-
+// performs the search if set -- could not find a convenient way to protect being and end date 
 if (isset($_POST['search'])){
-      $search = mysql_real_escape_string($_POST['search']);
-      $begin_date = str_replace('-','',mysql_real_escape_string($_POST['begin_date']));
-      $end_date = str_replace('-','',mysql_real_escape_string($_POST['end_date']));
+      $search = $db->quote($_POST['search']);
+      $begin_date = mysql_real_escape_string($_POST['begin_date']);
+      $end_date = mysql_real_escape_string($_POST['end_date']);
+      $begin_date = str_replace('-','', $begin_date);
+      $end_date = str_replace('-','', $end_date);
 
       $j = 1;
       $facet = array(); 
 
-  for($i = 0; $i < 50; $i++){
 
+// change the max to reflect how many times to query the API -- returns ten results for each iteration
+  for($i = 0; $i < 100; $i++){
+
+// where the magic's at: this establishes the variables construct the query.
         $params = array(
             'api-key' => API_KEY,
             'query' => $search,
@@ -49,69 +53,41 @@ if (isset($_POST['search'])){
 
         curl_setopt($ch, CURLOPT_URL, API_URL . http_build_query($params));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_GETFIELDS, $data);
 
         $inf = curl_exec($ch);
         curl_close($ch);
 
       $output = json_decode($inf, true);
 
+// takes the results and puts them in the Inbox table
       if(count($output['results']) > 0){
 
         foreach($output['results'] as $article ){
 
           foreach($article as $field => $value){
+
             if($field == 'byline') $author = (strlen($article['byline']) > 0) ? format_name($article['byline']) : 0;
             if(is_array($value)) { 
+             
                 $article["$field"] = implode(", ", $article["$field"]); 
                 $article["$field"] = ucwords(strtolower($article["$field"]));
             }
+
             $article["$field"] = htmlentities($article["$field"]); 
         }
-          mysql_insert_array($table, $article);
-          mysql_query("UPDATE $table SET source='nyt', text='sample text', name='$author' WHERE temp_id= '$j'");
+          mysql_insert_array($db, $table, $article);
+
+// a placeholder for source and text fields that can be filled later          
+          $sql = "UPDATE $table SET source='nyt', text='sample text', name=\"" . $author . "\"WHERE temp_id= '$j'";
+          $db->query($sql);
           $j++;
                     } }else {break;}
       unset($inf);
       unset($output);
  
-      }}
-
-function mysql_insert_array($table, $data, $exclude = array()) {
-
-    $fields = $values = array();
-
-    if( !is_array($exclude) ) $exclude = array($exclude);
-
-    foreach( array_keys($data) as $key ) {
-
-        if( !in_array($key, $exclude) ) {
-            $fields[] = "$key";
-            $values[] = "'" . mysql_real_escape_string($data[$key]) . "'";
-        }
     }
-
-    $fields = implode(",", $fields);
-    $values = implode(",", $values);
-
-    if( mysql_query("INSERT INTO $table ($fields) VALUES ($values)") ) {
-        return array( "mysql_error" => false,
-                      "mysql_insert_id" => mysql_insert_id(),
-                      "mysql_affected_rows" => mysql_affected_rows(),
-                      "mysql_info" => mysql_info()
-                    );
-    } else {
-        print_r(array( "mysql_error" => mysql_error() ));
-    }
-
 }
 
-if (isset($_POST['clear'])){
-        mysql_query("TRUNCATE TABLE $table");
-}
-
-
-// test code for a simple keyword search function
 echo  "<div id='container'>";
 echo <<< _FORM
 <h1>NYT API INBOX</h1>
@@ -138,50 +114,53 @@ _FORM2;
 // builds the table based on the database data
 echo "<table border='1'>";
 
-$query = "SELECT * FROM $table";
-$result = mysql_query($query);
-$rows = mysql_num_rows($result);
+$sql = "SELECT * FROM $table";
+$result = $db->prepare($sql);
+$result->execute();
+$count = 0;
 
-if($rows > 0){ 
-  $_SESSION['status'] = 1;
-  for ($j = 0; $j < $rows ; ++$j){
 
-    $article = mysql_fetch_array($result);
-    echo "<tr>";
+if(count($result) > 0){
 
-    foreach ($article as $key => $value){
+      $_SESSION['status'] = 1;
 
-      switch($key){
-          case '0': break;
-          case "temp_id": echo '<td>' . $article['temp_id'] . '</td>'; break;
-          case "date": echo '<td>' . date('Y-m-d',strtotime($article['date'])) . '</td>'; break;
-          case "title": {
-            echo "<td>";
-            if($article['nytd_title']) {echo $article['nytd_title'];}
-            else {echo $article['title'];}
-            echo "</td>"; 
-            break;}
-          case "name": echo '<td>' . $article['name'] . '</td>'; break;
-          case "per_facet": echo '<td>' . $article['per_facet'] . '</td>'; break;
-          case "org_facet": echo '<td>' . $article['org_facet'] . '</td>'; break;
-          case "url": echo "<td><a class='iframe' href='" . $article['url'] . "'>URL</a></td>"; break;
-      }
+      foreach ($db->query($sql) as $article){
+            $count = $count + 1;
+            echo "<tr>";
 
-    } 
-    echo "<td><a href='new_article.php?&temp_id=" . $article['temp_id'] . "'>add</a></td>";
-    echo "</tr>";
+            foreach ($article as $key => $value){
+
+              switch($key){
+                  case '0': break;
+                  case "temp_id": echo '<td>' . $article['temp_id'] . '</td>'; break;
+                  case "date": echo '<td>' . date('Y-m-d',strtotime($article['date'])) . '</td>'; break;
+                  case "title": {
+                    echo "<td>";
+                    if($article['nytd_title']) {echo $article['nytd_title'];}
+                    else {echo $article['title'];}
+                    echo "</td>"; 
+                    break;}
+                  case "name": echo '<td>' . $article['name'] . '</td>'; break;
+                  case "per_facet": echo '<td>' . $article['per_facet'] . '</td>'; break;
+                  case "org_facet": echo '<td>' . $article['org_facet'] . '</td>'; break;
+                  case "url": echo "<td><a class='iframe' href='" . $article['url'] . "'>URL</a></td>"; break;
+              }
+
+          } 
+          echo "<td><a href='new_article.php?&temp_id=" . $article['temp_id'] . "'>add</a></td>";
+          echo "</tr>";
     }} else { $_SESSION['status'] = 2; }
 
   switch($_SESSION['status']){
 
-  case 1: echo "<h2 style = 'color:green'>". $rows . " results</h2>"; break;
+  case 1: echo "<h2 style = 'color:green'>". $count . " results</h2>"; break;
   case 2: echo "<h2 style = 'color:green'> no results </h2>"; break;
   case 3: echo "<h2 style = 'color:green'> table cleared </h2>"; break;
+  session_destroy();
 
   }
 
-session_destroy();
-
+// a janky function for formatting the 'byline' field from the NYT JSON
 function format_name($name) {
   
   $name = ltrim($name,'By ');
@@ -202,11 +181,36 @@ function format_name($name) {
       case 5: return $names[1] . ', ' . $names[0]; break;
       case 6: return $names[1] . ', ' . $names[0]; break;
     }}
-
-  // return implode(' ', $names);
 }
 
-echo "</table>";
+// a function for inserting an array
+function mysql_insert_array($db, $table, $data, $exclude = array()) {
+
+    $fields = $values = array();
+
+    if( !is_array($exclude) ) $exclude = array($exclude);
+
+    foreach( array_keys($data) as $key ) {
+
+        if( !in_array($key, $exclude) ) {
+            $fields[] = "$key";
+            $values[] = $db->quote($data[$key]);
+        }
+    }
+
+    $fields = implode(",", $fields);
+    $values = implode(",", $values);
+    $sql = "INSERT INTO $table ($fields) VALUES ($values)";
+    // $query = $db->quote($sql);    
+    $query = $db->prepare($sql);
+    $query->execute();
+}
+
+if (isset($_POST['clear'])){
+        $db->query("TRUNCATE TABLE $table");
+}
+
 unset($_POST['clear']);
+echo "</table>";
 echo "</div></body></html>";
 ?>
