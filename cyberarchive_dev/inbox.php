@@ -120,6 +120,12 @@ $result->execute();
 $count = 0;
 
 
+
+if (isset($_POST['clear'])){
+        $db->query("TRUNCATE TABLE $table");
+}
+
+
 if(count($result) > 0){
 
       $_SESSION['status'] = 1;
@@ -204,10 +210,6 @@ function mysql_insert_array($db, $table, $data, $exclude = array()) {
     // $query = $db->quote($sql);    
     $query = $db->prepare($sql);
     $query->execute();
-}
-
-if (isset($_POST['clear'])){
-        $db->query("TRUNCATE TABLE $table");
 }
 
 $db = null;
