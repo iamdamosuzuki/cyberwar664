@@ -1,15 +1,25 @@
 <?php
 
+//this phpf fle creates a json file that has the information for the bar chart
+
+include 'util.php';
+
+
 $db_hostname = 'localhost';
 $db_database = 'cyberwar_test';
 $db_username = 'cyberwar';
 $db_password = 'cyberwar';
 
-$db = mysql_connect($db_hostname,$db_username, $db_password)
-   or die("Here's why we can't connect to the database: " . mysql_error());
+// set up database connection
 
-mysql_select_db($db_database)
-    or die("Here's why we can't select the database: " . mysql_error());
+try{
+    $db = new PDO($dsn, $user, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }	catch(PDOException $ex) {
+    echo 'Connection failed: ' . $ex->getMessage();
+}
+
+//There's are the queries for the count of each table
 
 $queryAuthor = "SELECT COUNT(*) FROM author_list";
 $queryExpert = "SELECT COUNT(*) FROM expert_list";
@@ -18,19 +28,42 @@ $queryActor = "SELECT COUNT(*) FROM actor_list";
 $queryAttack = "SELECT COUNT(*) FROM attack_list";
 $queryTech = "SELECT COUNT(*) FROM tech_list";
 
-$resultAuthor = mysql_query($queryAuthor);
-$resultExpert = mysql_query($queryExpert);
-$resultArticle = mysql_query($queryArticle);
-$resultActor = mysql_query($queryActor);
-$resultAttack = mysql_query($queryAttack);
-$resultTech = mysql_query($queryTech);
+//this gets the results in teh form of an associated array
 
-$count[] = (int)mysql_result($resultAuthor, 0);
-$count[] = (int)mysql_result($resultExpert, 0);
-$count[] = (int)mysql_result($resultArticle, 0);
-$count[] = (int)mysql_result($resultActor, 0);
-$count[] = (int)mysql_result($resultAttack, 0);
-$count[] = (int)mysql_result($resultTech, 0);
+$result = $db->prepare($queryAuthor);
+$result->execute();
+$resultAuthor = $result->fetch(PDO::FETCH_ASSOC);
+
+$result = $db->prepare($queryExpert);
+$result->execute();
+$resultExpert = $result->fetch(PDO::FETCH_ASSOC);
+
+$result = $db->prepare($queryArticle);
+$result->execute();
+$resultArticle = $result->fetch(PDO::FETCH_ASSOC);
+
+$result = $db->prepare($queryActor);
+$result->execute();
+$resultActor = $result->fetch(PDO::FETCH_ASSOC);
+
+$result = $db->prepare($queryAttack);
+$result->execute();
+$resultAttack = $result->fetch(PDO::FETCH_ASSOC);
+
+$result = $db->prepare($queryTech);
+$result->execute();
+$resultTech = $result->fetch(PDO::FETCH_ASSOC);
+
+
+//this takes the count and puts it in a json object, formatting
+//it the way D3 wants it
+
+$count[] = (int)$resultAuthor['COUNT(*)'];
+$count[] = (int)$resultExpert['COUNT(*)'];
+$count[] = (int)$resultArticle['COUNT(*)'];
+$count[] = (int)$resultActor['COUNT(*)'];
+$count[] = (int)$resultAttack['COUNT(*)'];
+$count[] = (int)$resultTech['COUNT(*)'];
 
 $name[] = 'Authors';
 $name[] = 'Experts';
@@ -46,13 +79,6 @@ $color[] = "rgb(191,107,4)";
 $color[] = "rgb(0,36,59)";
 $color[] = "rgb(160,173,50)";
 
-
-// $nodes = "{    \nodes\: " . $nodes .",    \links\:        [        ]}";
-//$data["bars"] = $bars;
-
-//foreach ($bars as $items)
-//$id[] = $items['id'];
-
 $data["count"] = $count;
 $data["name"] = $name;
 $data["color"] = $color;
@@ -61,13 +87,6 @@ $dataJSON = json_encode($data);
 $jsonobj = json_decode($dataJSON, TRUE);
 
 echo $dataJSON;
-
-
-//print_r($jsonobj['nodes'][2]['id']);
-
-
-
-
 
 
 ?>
