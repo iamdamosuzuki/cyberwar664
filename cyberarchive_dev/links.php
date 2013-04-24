@@ -1,4 +1,4 @@
-<?php
+<?php // generates links data for the network.php force-directed graph
 
 include 'util.php';
 

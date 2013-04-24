@@ -210,6 +210,7 @@ if (isset($_POST['clear'])){
         $db->query("TRUNCATE TABLE $table");
 }
 
+$db = null;
 unset($_POST['clear']);
 echo "</table>";
 echo "</div></body></html>";

@@ -1,4 +1,4 @@
-<?php
+<?php // generates a D3 force-directed graph from selected variables
 
 include 'util.php';
 include 'header.php';

@@ -1,4 +1,4 @@
-<?php 
+<?php // added a header to better organize our scripts
 session_start();
 
 ?>
@@ -9,7 +9,7 @@ session_start();
 <title>SI664 Cyberwarfare Database</title>
 <link rel='stylesheet' type='text/css' media='all' href='static/cyberarchive_back.css'/>
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="d3/d3.v3.min.js"></script>
+<script src="lib/d3/d3.v3.min.js"></script>
 <script type='text/javascript' src='static/moveFunction2.js'></script>
 <script type='text/javascript' src='static/confirmDel.js'></script>
 <script type='text/javascript' src='static/confirmClean.js'></script>
