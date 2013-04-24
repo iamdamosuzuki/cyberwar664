@@ -80,6 +80,7 @@ include 'header.php';
 			$result = $db->prepare($sql);
 			$result->execute();
 			$curart = $result->fetch(PDO::FETCH_ASSOC);
+			$curart['text'] = get_nyt_text($curart['url']);
 			
 
 		}
@@ -255,7 +256,7 @@ echo		 "<form action='submit_article.php";
 	Title:<input type='text' name='title' value='" . $curart['title'] . "'/><br/><br/>
 	Date(YYYY-MM-DD):<input type='text' name='date' value='" . $curart['date'] . "'/><br/><br/>
 	URL:<input type='text' name='url' size='100' value='" . $curart['url'] . "'/><br/><br/>
-	Text:<br /> <textarea style='width:500px;height:200px;' name='text'>" . get_nyt_text($curart['url']) . "</textarea><br/>
+	Text:<br /> <textarea style='width:500px;height:200px;' name='text'>" . $curart['text'] . "</textarea><br/>
 	<input type='submit' value='Submit'></form>";
 	
 	function get_nyt_text($url) {
