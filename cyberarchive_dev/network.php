@@ -62,9 +62,29 @@ switch($targetTable)
     break;
 }
 
-//The following script creates the Force Diagram network visualization links.php as the data source 
 
-echo <<<_END
+echo <<< _OUT
+<style>
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+  fill: #000;
+  stroke: none;
+}
+
+</style>
+
 <script>
 var width = 960,
     height = 600;
@@ -86,7 +106,6 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
       .nodes(graph.nodes)
       .links(graph.links)
       .start();
-      
 
   var link = svg.selectAll('.link')
       .data(graph.links)
@@ -117,25 +136,30 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
 
     node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-        
-        
+  d3.select("svg.network")
+    .style("border", "1px solid #009300")
+    .style("margin", "5px 25px 0 25px")
+    .style("float", "left");
+
   });
 });
+
 </script>
-<a href='index.php'>Return to main menu</a>
-<br />
-<br />
-<form id='netForm' name='networkInput' action='network.php' method='post' onchange='this.form.submit()'>
+
+<div id='netForm'>
+<form name='networkInput' action='network.php' method='post' onchange='this.form.submit()'>
     $sourceDrop
     <img src= "static/BlueCircle.png">
-    <br />
+    <br/>
     $targetDrop
     <img src= "static/OrangeCircle.png">
-    <br />
+    <br/><br/>
     <input type='submit' value='Submit' />
 </form>
-
+<br/>
+<a href='index.php'>Return to main menu</a>
+</div>
 </body>
 </html>
-_END;
+_OUT;
 ?>

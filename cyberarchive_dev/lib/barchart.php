@@ -10,8 +10,6 @@
 			
 			var dataset;
 			var datanames;
-			
-		
             
             d3.json("bars.php", function(json) {
               dataset = json.count;
@@ -33,7 +31,8 @@
                 var chart = d3.select("body")
                             .append("svg")
                             .attr("width", w + 30)
-                            .attr("height", h);
+                            .attr("height", h)
+                            .attr("class", "bars");
                     
                     var x = d3.scale.ordinal()
                         .domain(dataset)
@@ -112,21 +111,6 @@
                     chart.append("line")
                         .attr("x1", 0)
                         .attr("x2", w + 30)
-                        .attr("y1", h - 1)
-                        .attr("y2", h - 1)
-                        .style("stroke", "#fff");
-             
-                    chart.append("line")
-                        .attr("x1", 31)
-                        .attr("x2", 31)
-                        .attr("y1", 0)
-                        .attr("y2", h)
-                        .style("stroke", "#fff");
-    
-      
-                    chart.append("line")
-                        .attr("x1", 0)
-                        .attr("x2", w + 30)
                         .attr("y1", h)
                         .attr("y2", h)
                         .style("stroke", "#000");
@@ -138,7 +122,22 @@
                         .attr("y2", h)
                         .style("stroke", "#000");
 
+                    chart.append("line")
+                        .attr("x1", 0)
+                        .attr("x2", w + 30)
+                        .attr("y1", h - 1)
+                        .attr("y2", h - 1)
+                        .style("stroke", "#fff");
+             
+                    chart.append("line")
+                        .attr("x1", 31)
+                        .attr("x2", 31)
+                        .attr("y1", 0)
+                        .attr("y2", h)
+                        .style("stroke", "#fff");
 
+                  d3.select("svg.bars")
+                      .style("margin-left", "30%");
 			   }
 
         </script>

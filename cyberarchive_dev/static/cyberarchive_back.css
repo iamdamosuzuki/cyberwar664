@@ -87,7 +87,6 @@ h1{
     
 }
 
-
 table {
 
     border-collapse: collapse;
@@ -98,17 +97,18 @@ table td{
     padding: 5px;
 }
 
+#netForm {
+    margin: 125px 0 0 0;
+    padding: 2px 0 0 0;
+}
+
+
 /* these settings are used in new_article.php on the selection boxes*/
 
 .formfield {
     vertical-align: top;
     font-family: helvetica; 
 }
-
-#netForm {
-    margin: 80px 0 0 0;
-}
-
 
 #moveFunction {
     text-decoration:none;
@@ -133,21 +133,6 @@ th.headerSortDown {
     background-color:  #00FF00; 
 }
 
-/* network visualization */
-
-svg.network {
-
-    border: 1px solid #009300;
-    margin: 100px 25px;
-}
-
-svg{
-
-    margin-left: 30%;
-    padding: 0 0 0 5px;
-}
-
-svg.network{float:left;}
 div.bar {
     display: inline-block;
     width: 20px;
@@ -166,20 +151,4 @@ div.bar {
     padding: 2px 6px;
     font-size: 11px;
     line-height: 14px;
-}
-.node {
-  stroke: #fff;
-  stroke-width: 1.5px;
-}
-
-.link {
-  stroke: #999;
-  stroke-opacity: .6;
-}
-
-.node text {
-  pointer-events: none;
-  font: 10px sans-serif;
-  fill: #000;
-  stroke: none;
 }
