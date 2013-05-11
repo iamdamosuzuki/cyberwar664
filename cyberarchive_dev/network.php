@@ -1,7 +1,6 @@
 <?php // generates a D3 force-directed graph from selected variables
 
-include 'util.php';
-include 'header.php';
+session_start();
 
 //This first chunk of code uses the POST data to set the selection 
 //of the dropdown menus
@@ -20,6 +19,7 @@ if (isset($_POST['sourceTable'])){
 else{
     $targetTable = 'experts';
 }
+
 
 
 switch($sourceTable)
@@ -62,8 +62,50 @@ switch($targetTable)
     break;
 }
 
-
 echo <<< _OUT
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SI664 Cyberwarfare Database</title>
+<link rel='stylesheet' type='text/css' media='all' href='static/cyberarchive_back.css'/>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="lib/d3/d3.v3.min.js"></script>
+
+<script>
+$(function() {
+$( "#slider-range" ).slider({
+  range: true,
+  min: 0,
+  max: 500,
+  values: [ 75, 300 ],
+  slide: function( event, ui ) {
+    $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+  }
+});
+$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+  " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+});
+</script>
+ 
+</head>
+<body>
+
+<div id='header'><h1><a href='index.php'>THE CYBERWAR DIGITAL ARCHIVE</a></h1>
+<ul>
+<li><a href='new_article.php'>New Article</a><br/>
+<li><a href='view_articles.php'>Articles</a></li>
+<li><a href='authority.php?table=author_list'>Authors</a></li>
+<li><a href='authority.php?table=tech_list'>Techs</a></li>
+<li><a href='authority.php?table=expert_list'>Experts</a></li>
+<li><a href='authority.php?table=attack_list'>Attacks</a></li>
+<li><a href='authority.php?table=actor_list'>Actors</a></li>
+</ul>
+<a href='index.php'><img src='static/sad_mac.png' /></a>
+</div>
+
 <style>
 
 .node {
@@ -157,8 +199,16 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
     <input type='submit' value='Submit' />
 </form>
 <br/>
-<a href='index.php'>Return to main menu</a>
 </div>
+
+<p>
+  <label for="amount">Price range:</label>
+  <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+ 
+<div id="slider-range" style="width:250px; align: right;"></div>
+
+
 </body>
 </html>
 _OUT;
