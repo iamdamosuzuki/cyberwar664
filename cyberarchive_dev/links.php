@@ -76,45 +76,6 @@ switch($targetTable)
     break;
 }
 
-//The following two queries create the $nodes[] array, which D3 uses to create the nodes
-
-try{
-	$querySource ="SELECT name,id FROM " . $sourceList;
-	$result = $db->prepare($querySource);
-	$result->execute();
-//	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
-    foreach ($db->query($querySource) as $row){
-        $row['id'] = (int)$row['id'];
-        $row['group'] = 0;
-        $nodes[]= $row;;
-        }
-	} catch(PDOException $ex) {
-	echo 'Connection failed: ' . $ex->getMessage();
-	}
-
-
-
-try{
-	$queryTarget ="SELECT name,id FROM " . $targetList;
-	$result = $db->prepare($queryTarget);
-	$result->execute();
-    $resultSource = $result->fetch(PDO::FETCH_ASSOC);
-    foreach ($db->query($queryTarget) as $row){
-        $row['id'] = (int)$row['id'];
-        $row['group'] = 2;
-        $nodes[]= $row;;
-        }
-	} catch(PDOException $ex) {
-	echo 'Connection failed: ' . $ex->getMessage();
-	}
-
-//Creates the $data[] array which will be turned into JSON
-//This array has an object called nodes and an object called links
-
-$data["nodes"] = $nodes;
-$data["links"] = array();
-
-$linksCounter = 0;
 
 //Creates variables that form the MySQL queries depending on what is selected in the dropdown menu
 
@@ -160,6 +121,51 @@ switch($targetTable)
 }
 
 
+//The following two queries create the $nodes[] array, which D3 uses to create the nodes
+// $querySource ="SELECT name," . $sourceList . ".id,articles.date FROM " . $sourceList . " JOIN " . $sourceTable . " JOIN articles ON " . $sourceList . ".id = " . $sourceTable . "." . $sourceRow . " AND " . $sourceTable . ".article = articles.id";
+
+
+
+try{
+    $querySource = "SELECT name,id FROM " . $sourceList;
+	$result = $db->prepare($querySource);
+	$result->execute();
+//	$resultSource = $result->fetch(PDO::FETCH_ASSOC);
+    foreach ($db->query($querySource) as $row){
+        $row['id'] = (int)$row['id'];
+        $row['group'] = 0;
+        $nodes[]= $row;;
+        }
+	} catch(PDOException $ex) {
+	echo 'Connection failed: ' . $ex->getMessage();
+	}
+
+
+
+try{
+	$queryTarget ="SELECT name,id FROM " . $targetList;
+	$result = $db->prepare($queryTarget);
+	$result->execute();
+    $resultSource = $result->fetch(PDO::FETCH_ASSOC);
+    foreach ($db->query($queryTarget) as $row){
+        $row['id'] = (int)$row['id'];
+        $row['group'] = 2;
+        $nodes[]= $row;;
+        }
+	} catch(PDOException $ex) {
+	echo 'Connection failed: ' . $ex->getMessage();
+	}
+
+//Creates the $data[] array which will be turned into JSON
+//This array has an object called nodes and an object called links
+
+$data["nodes"] = $nodes;
+$data["links"] = array();
+
+$linksCounter = 0;
+
+
+
 //The following iterative block creates the links data
 
 
@@ -169,7 +175,8 @@ for($i = 0; $i < count($data['nodes']); $i++){
 
     if ($data['nodes'][$i]['group'] == 0){
         $sourceID = $data['nodes'][$i]['id'];
-        $q1 = "SELECT " . $sourceTable . "." . $sourceRow . ", " . $targetTable . "." . $targetRow . " FROM " . $sourceTable . " JOIN articles JOIN " . $targetTable . " ON " . $sourceTable . ".article = articles.id AND " . $targetTable . ".article = articles.id WHERE " . $sourceTable . "." . $sourceRow . " = '$sourceID'";
+        $q1 = "SELECT " . "articles.date," . $sourceTable . "." . $sourceRow . ", " . $targetTable . "." . $targetRow . " FROM " . $sourceTable . " JOIN articles JOIN " . $targetTable . " ON " . $sourceTable . ".article = articles.id AND " . $targetTable . ".article = articles.id WHERE " . $sourceTable . "." . $sourceRow . " = '$sourceID'";
+
         try{
             $queryTarget ="SELECT name,id FROM " . $targetList;
             $result = $db->prepare($q1);
@@ -183,6 +190,7 @@ for($i = 0; $i < count($data['nodes']); $i++){
                             $data['links'][$linksCounter]['value'] = 1;
                             $data['links'][$linksCounter]['expertID'] = $row[$targetRow];
                             $data['links'][$linksCounter]['authorID'] = $row[$sourceRow];
+                            $data['links'][$linksCounter]['linkDate'] = date('Y', strtotime($row['date']));
                             $linksCounter++;
                         }
                     }
