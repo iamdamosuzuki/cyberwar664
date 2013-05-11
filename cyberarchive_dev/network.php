@@ -143,10 +143,27 @@ var svg = d3.select('body').append('svg')
     .attr('height', height)
     .attr('class', 'network');
 
-d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(error, graph) {
+var data = 'links.php?sourceTable=$sourceTable&targetTable=$targetTable';
+
+var linksFiltered = [];
+
+d3.json(data, function(error, graph) {
+
+  var k = 0;
+  min = 2005;
+  max = 2012;
+
+  for (i in graph.links){ 
+    if (graph.links[i].linkDate > min && graph.links[i].linkDate < max){         
+      linksFiltered[k] = graph.links[i];
+      // graph.nodes['expertID'].visibility = 'visible'; 
+      k++;
+      }
+    }
+
   force
       .nodes(graph.nodes)
-      .links(graph.links)
+      .links(linksFiltered)
       .start();
 
   var link = svg.selectAll('.link')
@@ -158,7 +175,8 @@ d3.json('links.php?sourceTable=$sourceTable&targetTable=$targetTable', function(
   var node = svg.selectAll('.node')
       .data(graph.nodes)
     .enter().append('g')
-      .attr('class', 'node');
+      .attr('class', 'node')
+      .attr("visibility", function(d){return d.visibility;});
  
   node.append('circle')
       .attr('r', 5)
