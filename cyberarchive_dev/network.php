@@ -144,22 +144,34 @@ var svg = d3.select('body').append('svg')
     .attr('class', 'network');
 
 var data = 'links.php?sourceTable=$sourceTable&targetTable=$targetTable';
-
+var id1 = '$sourceTable' + 'ID';
+var id2 = '$targetTable' + 'ID';
 var linksFiltered = [];
 
 d3.json(data, function(error, graph) {
 
   var k = 0;
-  min = 2005;
-  max = 2012;
+  min = 1995;
+  max = 2005;
+  var visibleNodes = [];
 
   for (i in graph.links){ 
     if (graph.links[i].linkDate > min && graph.links[i].linkDate < max){         
       linksFiltered[k] = graph.links[i];
-      // graph.nodes['expertID'].visibility = 'visible'; 
+      visibleNodes.push(Number(linksFiltered[k][id1]));
       k++;
       }
     }
+
+  for (i in graph.nodes){
+    console.log(visibleNodes);
+    console.log(visibleNodes.indexOf(graph.nodes[i].id));
+    if (visibleNodes.indexOf(graph.nodes[i].id) != -1) {
+      graph.nodes[i].visibility = "visible";
+      console.log(graph.nodes[i]);
+    }
+
+  }
 
   force
       .nodes(graph.nodes)
