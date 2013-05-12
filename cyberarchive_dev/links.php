@@ -134,6 +134,7 @@ try{
     foreach ($db->query($querySource) as $row){
         $row['id'] = (int)$row['id'];
         $row['group'] = 0;
+        $row['visibility'] = 'hidden';
         $nodes[]= $row;;
         }
 	} catch(PDOException $ex) {
@@ -150,6 +151,7 @@ try{
     foreach ($db->query($queryTarget) as $row){
         $row['id'] = (int)$row['id'];
         $row['group'] = 2;
+        $row['visibility'] = 'hidden';
         $nodes[]= $row;;
         }
 	} catch(PDOException $ex) {
@@ -188,8 +190,8 @@ for($i = 0; $i < count($data['nodes']); $i++){
                             $data['links'][$linksCounter]['source'] = $i;
                             $data['links'][$linksCounter]['target'] = $l;
                             $data['links'][$linksCounter]['value'] = 1;
-                            $data['links'][$linksCounter]['expertID'] = $row[$targetRow];
-                            $data['links'][$linksCounter]['authorID'] = $row[$sourceRow];
+                            $data['links'][$linksCounter][$sourceTable . 'ID'] = $row[$targetRow];
+                            $data['links'][$linksCounter][$targetTable . 'ID'] = $row[$sourceRow];
                             $data['links'][$linksCounter]['linkDate'] = date('Y', strtotime($row['date']));
                             $linksCounter++;
                         }
